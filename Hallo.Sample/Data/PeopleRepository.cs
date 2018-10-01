@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Hallo.Sample.Models;
@@ -27,10 +28,21 @@ namespace Hallo.Sample.Data
             _people = JsonConvert.DeserializeObject<Person[]>(json);
         }
 
-        public Person[] List()
+        public PagedList<Person> List(Paging paging)
         {
             EnsureDataLoaded();
-            return _people;
+
+            var items = _people.Skip((paging.Page - 1) * paging.PageSize)
+                .Take(paging.PageSize)
+                .ToArray();
+            
+            return new PagedList<Person>
+            {
+                CurrentPage = paging.Page,
+                TotalItems = _people.Length,
+                TotalPages = (int)Math.Ceiling(_people.Length / (double)paging.PageSize),
+                Items = items
+            };
         }
 
         public Person Get(int id)

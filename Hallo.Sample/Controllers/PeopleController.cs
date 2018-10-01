@@ -17,9 +17,9 @@ namespace Hallo.Sample.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Person>> List()
+        public ActionResult<PagedList<Person>> List([FromQuery]Paging paging)
         {
-            return _repository.List();
+            return _repository.List(paging);
         }
 
         [HttpGet]
