@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Hal.Poc.Hypermedia
+namespace Hallo
 {
     public abstract class Hal<T> : IHal
     {
@@ -16,6 +16,6 @@ namespace Hal.Poc.Hypermedia
 
         protected virtual object StateFor(T resource) => resource;
         protected virtual object EmbeddedFor(T resource) => null;
-        protected abstract IEnumerable<Link> LinksFor(T resource);
+        protected virtual IEnumerable<Link> LinksFor(T resource) => null;
     }
 }

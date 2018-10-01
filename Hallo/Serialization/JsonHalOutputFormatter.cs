@@ -1,6 +1,5 @@
 using System;
 using System.Buffers;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Hal.Poc.Hypermedia.Serialization
+namespace Hallo.Serialization
 {
     public class JsonHalOutputFormatter : JsonOutputFormatter
     {

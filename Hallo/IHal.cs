@@ -1,6 +1,6 @@
-namespace Hal.Poc.Hypermedia
+namespace Hallo
 {
-    internal interface IHal
+    public interface IHal
     {
         HalRepresentation RepresentationOf(object resource);
     }

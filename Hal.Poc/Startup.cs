@@ -1,8 +1,8 @@
 ﻿using Hal.Poc.Data;
-using Hal.Poc.Hypermedia;
-using Hal.Poc.Hypermedia.Serialization;
 using Hal.Poc.Models;
 using Hal.Poc.Models.Hypermedia;
+using Hallo;
+using Hallo.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

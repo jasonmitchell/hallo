@@ -13,4 +13,8 @@
         <PackageReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Hallo\Hallo.csproj" />
+    </ItemGroup>
+
 </Project>

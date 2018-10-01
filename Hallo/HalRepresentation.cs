@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Hal.Poc.Hypermedia
+namespace Hallo
 {
     public class HalRepresentation
     {

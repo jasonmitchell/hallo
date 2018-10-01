@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Hal.Poc.Hypermedia.Serialization
+namespace Hallo.Serialization
 {
     internal class LinksConverter : JsonConverter
     {

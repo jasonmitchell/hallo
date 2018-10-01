@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Hal.Poc.Hypermedia
+namespace Hallo
 {
     public readonly struct Link
     {
@@ -13,7 +13,7 @@ namespace Hal.Poc.Hypermedia
         public string Href { get; }
         public bool Templated => IsTemplatedRegex.IsMatch(Href);
 
-        internal Link(string rel, string href)
+        public Link(string rel, string href)
         {
             if (string.IsNullOrWhiteSpace(rel))
             {

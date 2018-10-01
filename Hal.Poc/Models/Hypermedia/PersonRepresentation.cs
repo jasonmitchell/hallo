@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Hal.Poc.Hypermedia;
+using Hallo;
 
 namespace Hal.Poc.Models.Hypermedia
 {
