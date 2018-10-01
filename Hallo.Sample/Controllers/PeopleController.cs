@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Hal.Poc.Data;
-using Hal.Poc.Models;
+using Hallo.Sample.Data;
+using Hallo.Sample.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hal.Poc.Controllers
+namespace Hallo.Sample.Controllers
 {
     [Route("[controller]")]
     [ApiController]

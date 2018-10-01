@@ -1,10 +1,10 @@
 using System.IO;
 using System.Linq;
-using Hal.Poc.Models;
+using Hallo.Sample.Models;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 
-namespace Hal.Poc.Data
+namespace Hallo.Sample.Data
 {
     public class PeopleRepository
     {

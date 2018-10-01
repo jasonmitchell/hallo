@@ -1,4 +1,4 @@
-namespace Hal.Poc.Models
+namespace Hallo.Sample.Models
 {
     public class Person
     {

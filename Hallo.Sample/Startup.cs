@@ -1,7 +1,6 @@
-﻿using Hal.Poc.Data;
-using Hal.Poc.Models;
-using Hal.Poc.Models.Hypermedia;
-using Hallo;
+﻿using Hallo.Sample.Data;
+using Hallo.Sample.Models;
+using Hallo.Sample.Models.Hypermedia;
 using Hallo.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hal.Poc
+namespace Hallo.Sample
 {
     public class Startup
     {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Hallo;
 
-namespace Hal.Poc.Models.Hypermedia
+namespace Hallo.Sample.Models.Hypermedia
 {
     public class PersonRepresentation : Hal<Person>
     {

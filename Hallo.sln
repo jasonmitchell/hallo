@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hal.Poc", "Hal.Poc\Hal.Poc.csproj", "{65F9E989-D7D1-4312-B95A-832C851E8FAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.Sample", "Hallo.Sample\Hallo.Sample.csproj", "{65F9E989-D7D1-4312-B95A-832C851E8FAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo", "Hallo\Hallo.csproj", "{DA4F276C-C9A1-4CBE-B912-FF4FEE79B00C}"
 EndProject
