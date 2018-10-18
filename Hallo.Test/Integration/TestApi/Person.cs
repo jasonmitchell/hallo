@@ -8,27 +8,4 @@ namespace Hallo.Test.Integration.TestApi
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
-    
-    public class PersonRepresentation : Hal<Person>
-    {
-        private readonly ContactLookup _contacts;
-
-        public PersonRepresentation(ContactLookup contacts)
-        {
-            _contacts = contacts;
-        }
-        
-        protected override IEnumerable<Link> LinksFor(Person resource)
-        {
-            yield return new Link("self", $"/people/{resource.Id}");
-        }
-
-        protected override object EmbeddedFor(Person resource)
-        {
-            return new
-            {
-                contacts = _contacts.For(resource)
-            };
-        }
-    }
 }

@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Hallo.Test.Integration.TestApi;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;

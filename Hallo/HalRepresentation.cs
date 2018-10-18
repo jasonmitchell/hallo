@@ -19,5 +19,10 @@ namespace Hallo
             Embedded = embedded;
             Links = links;
         }
+
+        public HalRepresentation WithoutEmbedded()
+        {
+            return new HalRepresentation(State, null, Links);
+        }
     }
 }
