@@ -9,4 +9,10 @@ namespace Hallo.Sample.Models.Hypermedia
             yield return new Link(Link.Self, $"/people/{resource.Id}");
         }
     }
+    
+    public class PersonListRepresentation : PagedListRepresentation<Person>
+    {
+        public PersonListRepresentation(Hal<Person> personRepresentation) 
+            : base("/people", personRepresentation) { }
+    }
 }

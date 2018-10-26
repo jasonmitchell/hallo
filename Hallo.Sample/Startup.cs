@@ -30,6 +30,7 @@ namespace Hallo.Sample
             
             services.AddSingleton<PeopleRepository>();
             services.AddTransient<Hal<Person>, PersonRepresentation>();
+            services.AddTransient<Hal<PagedList<Person>>, PersonListRepresentation>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
