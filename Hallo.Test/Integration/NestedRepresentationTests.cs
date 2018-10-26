@@ -28,8 +28,12 @@ namespace Hallo.Test.Integration
             var embedded = json.Value<JObject>("_embedded");
             embedded.Should().NotBeNull();
 
-            var items = embedded["items"];
+            var items = embedded["items"].As<JArray>();
             items.Should().NotBeNull();
+            items.Count.Should().BeGreaterThan(0);
+            items[0]["_links"].Should().NotBeNull();
+            items[0]["_embedded"].Should().BeNull();
+            items[0]["id"].Should().NotBeNull();
         }
     }
 }

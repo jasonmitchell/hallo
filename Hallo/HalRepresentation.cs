@@ -13,16 +13,17 @@ namespace Hallo
         [JsonProperty("_links")]
         public IEnumerable<Link> Links { get; }
 
-        internal HalRepresentation(object state, object embedded, IEnumerable<Link> links)
+        public HalRepresentation(object state, IEnumerable<Link> links)
+        {
+            State = state;
+            Links = links;
+        }
+
+        public HalRepresentation(object state, object embedded, IEnumerable<Link> links)
         {
             State = state;
             Embedded = embedded;
             Links = links;
-        }
-
-        public HalRepresentation WithoutEmbedded()
-        {
-            return new HalRepresentation(State, null, Links);
         }
     }
 }

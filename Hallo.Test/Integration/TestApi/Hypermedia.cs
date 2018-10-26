@@ -52,8 +52,11 @@ namespace Hallo.Test.Integration.TestApi
 
             foreach (var item in resource.Items)
             {
-                var representation = _itemRepresentation.RepresentationOf(item);
-                items.Add(representation.WithoutEmbedded());
+                var state = _itemRepresentation.StateFor(item);
+                var links = _itemRepresentation.LinksFor(item);
+                
+                // TODO: Remove "state" from resulting JSON
+                items.Add(new HalRepresentation(state, links));
             }
 
             return new
