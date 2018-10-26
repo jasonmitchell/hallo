@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hallo.Test.Integration.TestApi
 {
@@ -48,20 +49,14 @@ namespace Hallo.Test.Integration.TestApi
 
         protected override object EmbeddedFor(PagedList<TItem> resource)
         {
-            var items = new List<object>();
-
-            foreach (var item in resource.Items)
-            {
-                var state = _itemRepresentation.StateFor(item);
-                var links = _itemRepresentation.LinksFor(item);
-                
-                // TODO: Remove "state" from resulting JSON
-                items.Add(new HalRepresentation(state, links));
-            }
+            var items = from item in resource.Items
+                        let state = _itemRepresentation.StateFor(item)
+                        let links = _itemRepresentation.LinksFor(item)
+                        select new HalRepresentation(state, links);
 
             return new
             {
-                items
+                Items = items.ToList()
             };
         }
 

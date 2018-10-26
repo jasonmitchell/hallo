@@ -25,6 +25,7 @@ namespace Hallo.Serialization
                 NullValueHandling = NullValueHandling.Ignore,
             };
             
+            DefaultSerializerSettings.Converters.Add(new HalRepresentationConverter());
             DefaultSerializerSettings.Converters.Add(new LinksConverter());
         }
         
@@ -47,13 +48,7 @@ namespace Hallo.Serialization
             }
 
             var representation = representationGenerator.RepresentationOf(context.Object);
-            
-            var jObject = JObject.FromObject(representation, CreateJsonSerializer());
-            var state = jObject.Property("state");
-            jObject.Add(state.Value.Children<JProperty>());
-            state.Remove();
-            
-            var json = JsonConvert.SerializeObject(jObject, SerializerSettings);
+            var json = JsonConvert.SerializeObject(representation, SerializerSettings);
             
             var response = context.HttpContext.Response;
             response.ContentType = ContentType;

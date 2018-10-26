@@ -6,11 +6,7 @@ namespace Hallo
     public class HalRepresentation
     {
         public object State { get; }
-        
-        [JsonProperty("_embedded")]
         public object Embedded { get; }
-        
-        [JsonProperty("_links")]
         public IEnumerable<Link> Links { get; }
 
         public HalRepresentation(object state, IEnumerable<Link> links)

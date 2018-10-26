@@ -17,7 +17,7 @@ namespace Hallo.Test.Integration
         }
         
         [Fact]
-        public async Task Test()
+        public async Task SerializesNestedRepresentations()
         {
             var client = _factory.CreateClient();
             var response = await client.GetAsync("/people");
