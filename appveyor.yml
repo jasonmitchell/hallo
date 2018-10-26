@@ -1,0 +1,28 @@
+version: 1.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+skip_tags: true
+skip_branch_with_pr: true
+image: Visual Studio 2017
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+nuget:
+  disable_publish_on_pr: true
+before_build:
+- cmd: nuget restore
+build:
+  publish_nuget: true
+  publish_nuget_symbols: true
+  verbosity: minimal
+deploy:
+  provider: NuGet
+  api_key:
+    secure: GCgS4pnyOIKQJsCXqCwK08qo8eORJXxakxbGnVm/IYGZ9IymT7dXq0702BytUqbN
+  skip_symbols: false
+  artifact: /.*\.nupkg/
