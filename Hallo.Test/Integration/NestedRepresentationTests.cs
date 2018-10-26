@@ -15,9 +15,26 @@ namespace Hallo.Test.Integration
         {
             _factory = factory;
         }
-        
+
         [Fact]
         public async Task SerializesNestedRepresentations()
+        {
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/orders/123");
+            
+            var content = await response.Content.ReadAsStringAsync();
+            var json = JsonConvert.DeserializeObject<JObject>(content);
+            
+            var embedded = json.Value<JObject>("_embedded");
+            embedded.Should().NotBeNull();
+
+            var shippingInformation = embedded["shippingInformation"];
+            shippingInformation.Should().NotBeNull();
+            shippingInformation.Children().Should().HaveCountGreaterThan(0);
+        }
+        
+        [Fact]
+        public async Task SerializesRecursiveNestedRepresentations()
         {
             var client = _factory.CreateClient();
             var response = await client.GetAsync("/people");

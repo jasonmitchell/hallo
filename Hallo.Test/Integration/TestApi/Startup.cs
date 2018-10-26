@@ -18,6 +18,7 @@ namespace Hallo.Test.Integration.TestApi
             services.AddTransient<ContactLookup>();
             services.AddTransient<Hal<Person>, PersonRepresentation>();
             services.AddTransient<Hal<PagedList<Person>>, PersonListRepresentation>();
+            services.AddTransient<Hal<Order>, OrderRepresentation>();
         }
 
         public void Configure(IApplicationBuilder app)
