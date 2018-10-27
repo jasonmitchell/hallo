@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Hallo.Serialization
@@ -39,20 +38,21 @@ namespace Hallo.Serialization
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ContentType));
         }
 
-        public override Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
+        public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
         {
             var representationGenerator = GetRepresentationGenerator(context.HttpContext.RequestServices, context.ObjectType);
             if (representationGenerator == null)
             {
-                return base.WriteResponseBodyAsync(context, selectedEncoding);
+                await base.WriteResponseBodyAsync(context, selectedEncoding);
+                return;
             }
 
-            var representation = representationGenerator.RepresentationOf(context.Object);
+            var representation = await representationGenerator.RepresentationOfAsync(context.Object);
             var json = JsonConvert.SerializeObject(representation, SerializerSettings);
             
             var response = context.HttpContext.Response;
             response.ContentType = ContentType;
-            return response.WriteAsync(json);
+            await response.WriteAsync(json);
         }
 
         private static IHal GetRepresentationGenerator(IServiceProvider services, Type resourceType)

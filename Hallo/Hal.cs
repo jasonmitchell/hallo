@@ -1,39 +1,64 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hallo
 {
-    public abstract class Hal<T> : IHal
+    public abstract class Hal<T>  : IHal
     {
-        HalRepresentation IHal.RepresentationOf(object resource)
+        async Task<HalRepresentation> IHal.RepresentationOfAsync(object resource)
         {
             var typedResource = (T) resource;
-            var state = StateFor(typedResource);
-            var embedded = EmbeddedFor(typedResource);
-            var links = LinksFor(typedResource);
+
+            var state = await StateFor(this, typedResource);
+            var embedded = await EmbeddedFor(this, typedResource);
+            var links = await LinksFor(this, typedResource);
             
             return new HalRepresentation(state, embedded, links);
         }
 
-        object IHal.StateFor(object resource)
+        private static async Task<object> StateFor(IHal representation, T resource)
         {
-            var typedResource = (T) resource;
-            return StateFor(typedResource);
+            if (representation is IHalStateAsync<T> asyncState)
+            {
+                return await asyncState.StateForAsync(resource);
+            }
+
+            if (representation is IHalState<T> state)
+            {
+                return state.StateFor(resource);
+            }
+
+            return resource;
         }
 
-        object IHal.EmbeddedFor(object resource)
+        private static async Task<object> EmbeddedFor(IHal representation, T resource)
         {
-            var typedResource = (T) resource;
-            return EmbeddedFor(typedResource);
+            if (representation is IHalEmbeddedAsync<T> asyncEmbedded)
+            {
+                return await asyncEmbedded.EmbeddedForAsync(resource);
+            }
+
+            if (representation is IHalEmbedded<T> embedded)
+            {
+                return embedded.EmbeddedFor(resource);
+            }
+
+            return null;
         }
 
-        IEnumerable<Link> IHal.LinksFor(object resource)
+        private static async Task<IEnumerable<Link>> LinksFor(IHal representation, T resource)
         {
-            var typedResource = (T) resource;
-            return LinksFor(typedResource);
-        }
+            if (representation is IHalLinksAsync<T> asyncLinks)
+            {
+                return await asyncLinks.LinksForAsync(resource);
+            }
 
-        protected virtual object StateFor(T resource) => resource;
-        protected virtual object EmbeddedFor(T resource) => null;
-        protected virtual IEnumerable<Link> LinksFor(T resource) => null;
+            if (representation is IHalLinks<T> links)
+            {
+                return links.LinksFor(resource);
+            }
+
+            return null;
+        }
     }
 }
