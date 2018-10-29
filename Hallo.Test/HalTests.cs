@@ -77,60 +77,6 @@ namespace Hallo.Test
             });
         }
         
-        [Fact]
-        public async Task LinksFor_ReturnsLinksForRepresentation()
-        {
-            var representation = new LinkedRepresentation();
-            var resource = new ResourceModel
-            {
-                A = 1,
-                B = 2,
-                C = 3
-            };
-            
-            var links = await ((IHal) representation).LinksForAsync(resource);
-            links.Should().BeEquivalentTo(new[]
-            {
-                new Link("self", "/resource/123")
-            });
-        }
-        
-//        [Fact]
-//        public async Task StateFor_ReturnsStateForRepresentation()
-//        {
-//            var representation = new ModifiedStateRepresentation();
-//            var resource = new ResourceModel
-//            {
-//                A = 1,
-//                B = 2,
-//                C = 3
-//            };
-//            
-//            var state = await ((IHal) representation).StateForAsync(resource);
-//            state.Should().BeEquivalentTo(new
-//            {
-//                A = 1
-//            });
-//        }
-        
-        [Fact]
-        public async Task EmbeddedFor_ReturnsEmbeddedResourcesForRepresentation()
-        {
-            var representation = new EmbeddedRepresentation();
-            var resource = new ResourceModel
-            {
-                A = 1,
-                B = 2,
-                C = 3
-            };
-            
-            var embedded = await ((IHal) representation).EmbeddedForAsync(resource);
-            embedded.Should().BeEquivalentTo(new
-            {
-                D = 123
-            });
-        }
-        
         private class ResourceModel
         {
             public int A { get; set; }
@@ -140,17 +86,17 @@ namespace Hallo.Test
 
         private class DefaultRepresentation : Hal<ResourceModel> { }
 
-        private class LinkedRepresentation : Hal<ResourceModel>
+        private class LinkedRepresentation : Hal<ResourceModel>, IHalLinks<ResourceModel>
         {
-            protected override IEnumerable<Link> LinksFor(ResourceModel resource)
+            public IEnumerable<Link> LinksFor(ResourceModel resource)
             {
                 yield return new Link("self", "/resource/123");
             }
         }
 
-        private class ModifiedStateRepresentation : Hal<ResourceModel>
+        private class ModifiedStateRepresentation : Hal<ResourceModel>, IHalState<ResourceModel>
         {
-            protected override object StateFor(ResourceModel resource)
+            public object StateFor(ResourceModel resource)
             {
                 return new
                 {
@@ -159,9 +105,9 @@ namespace Hallo.Test
             }
         }
 
-        private class EmbeddedRepresentation : Hal<ResourceModel>
+        private class EmbeddedRepresentation : Hal<ResourceModel>, IHalEmbedded<ResourceModel>
         {
-            protected override object EmbeddedFor(ResourceModel resource)
+            public object EmbeddedFor(ResourceModel resource)
             {
                 return new
                 {

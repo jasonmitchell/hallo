@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hallo.Test.Integration.TestApi
 {
-    public class PersonRepresentation : Hal<Person>
+    public class PersonRepresentation : Hal<Person>,
+                                        IHalLinks<Person>,
+                                        IHalEmbeddedAsync<Person>
     {
         private readonly ContactLookup _contacts;
 
@@ -12,32 +15,33 @@ namespace Hallo.Test.Integration.TestApi
             _contacts = contacts;
         }
     
-        protected override IEnumerable<Link> LinksFor(Person resource)
+        public IEnumerable<Link> LinksFor(Person resource)
         {
             yield return new Link("self", $"/people/{resource.Id}");
         }
 
-        protected override object EmbeddedFor(Person resource)
+        public async Task<object> EmbeddedForAsync(Person resource)
         {
             return new
             {
-                contacts = _contacts.For(resource)
+                contacts = await _contacts.For(resource)
             };
         }
     }
 
-    public abstract class PagedListRepresentation<TItem> : Hal<PagedList<TItem>>
+    public abstract class PagedListRepresentation<TItem> : Hal<PagedList<TItem>>, IHalState<PagedList<TItem>>,
+                                                           IHalEmbedded<PagedList<TItem>>, IHalLinks<PagedList<TItem>>
     {
         private readonly string _baseUrl;
-        private readonly IHal _itemRepresentation;
+        private readonly IHalLinks<TItem> _itemLinks;
 
-        protected PagedListRepresentation(string baseUrl, IHal itemRepresentation)
+        protected PagedListRepresentation(string baseUrl, IHalLinks<TItem> itemLinks)
         {
             _baseUrl = baseUrl;
-            _itemRepresentation = itemRepresentation;
+            _itemLinks = itemLinks;
         }
         
-        protected override object StateFor(PagedList<TItem> resource)
+        public object StateFor(PagedList<TItem> resource)
         {
             return new
             {
@@ -47,12 +51,11 @@ namespace Hallo.Test.Integration.TestApi
             };
         }
 
-        protected override object EmbeddedFor(PagedList<TItem> resource)
+        public object EmbeddedFor(PagedList<TItem> resource)
         {
             var items = from item in resource.Items
-                        let state = _itemRepresentation.StateFor(item)
-                        let links = _itemRepresentation.LinksFor(item)
-                        select new HalRepresentation(state, links);
+                        let links = _itemLinks.LinksFor(item)
+                        select new HalRepresentation(item, links);
 
             return new
             {
@@ -60,7 +63,7 @@ namespace Hallo.Test.Integration.TestApi
             };
         }
 
-        protected override IEnumerable<Link> LinksFor(PagedList<TItem> resource)
+        public IEnumerable<Link> LinksFor(PagedList<TItem> resource)
         {
             yield return new Link("self", $"{_baseUrl}?page={resource.CurrentPage}");
             yield return new Link("first", $"{_baseUrl}?page=1");
@@ -80,7 +83,7 @@ namespace Hallo.Test.Integration.TestApi
 
     public class PersonListRepresentation : PagedListRepresentation<Person>
     {
-        public PersonListRepresentation(Hal<Person> personRepresentation) 
+        public PersonListRepresentation(PersonRepresentation personRepresentation) 
             : base("/people", personRepresentation) { }
     }
 }

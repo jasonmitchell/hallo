@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hallo.Test.Integration.TestApi
 {
     public class ContactLookup
     {
-        public IEnumerable<Person> For(Person person)
+        public Task<IEnumerable<Person>> For(Person person)
         {
-            return new[]
+            return Task.FromResult<IEnumerable<Person>>(new[]
             {
                 new Person
                 {
@@ -14,7 +15,7 @@ namespace Hallo.Test.Integration.TestApi
                     FirstName = "Contact",
                     LastName = "User"
                 }
-            };
+            });
         }
     }
 }
