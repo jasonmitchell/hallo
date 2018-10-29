@@ -29,6 +29,8 @@ namespace Hallo.Sample
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             
             services.AddSingleton<PeopleRepository>();
+            
+            services.AddTransient<PersonRepresentation>();
             services.AddTransient<Hal<Person>, PersonRepresentation>();
             services.AddTransient<Hal<PagedList<Person>>, PersonListRepresentation>();
         }

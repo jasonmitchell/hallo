@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Hallo.Test
@@ -7,7 +9,7 @@ namespace Hallo.Test
     public class HalTests
     {
         [Fact]
-        public void CreatesDefaultRepresentation()
+        public async Task RepresentationOf_CreatesDefaultRepresentation()
         {
             var representation = new DefaultRepresentation();
             var resource = new ResourceModel
@@ -17,12 +19,12 @@ namespace Hallo.Test
                 C = 3
             };
 
-            var hal = ((IHal) representation).RepresentationOf(resource);
+            var hal = await ((IHal) representation).RepresentationOfAsync(resource);
             hal.State.Should().BeEquivalentTo(resource);
         }
 
         [Fact]
-        public void AppendsLinksToRepresentation()
+        public async Task RepresentationOf_AppendsLinksToRepresentation()
         {
             var representation = new LinkedRepresentation();
             var resource = new ResourceModel
@@ -32,7 +34,7 @@ namespace Hallo.Test
                 C = 3
             };
             
-            var hal = ((IHal) representation).RepresentationOf(resource);
+            var hal = await ((IHal) representation).RepresentationOfAsync(resource);
             hal.State.Should().BeEquivalentTo(resource);
             hal.Links.Should().BeEquivalentTo(new[]
             {
@@ -41,7 +43,7 @@ namespace Hallo.Test
         }
 
         [Fact]
-        public void ModifiesRepresentationState()
+        public async Task RepresentationOf_ModifiesRepresentationState()
         {
             var representation = new ModifiedStateRepresentation();
             var resource = new ResourceModel
@@ -51,7 +53,7 @@ namespace Hallo.Test
                 C = 3
             };
             
-            var hal = ((IHal) representation).RepresentationOf(resource);
+            var hal = await ((IHal) representation).RepresentationOfAsync(resource);
             hal.State.Should().BeEquivalentTo(new
             {
                 A = 1
@@ -59,7 +61,7 @@ namespace Hallo.Test
         }
 
         [Fact]
-        public void EmbedsResourceInRepresentation()
+        public async Task RepresentationOf_EmbedsResourceInRepresentation()
         {
             var representation = new EmbeddedRepresentation();
             var resource = new ResourceModel
@@ -69,13 +71,29 @@ namespace Hallo.Test
                 C = 3
             };
             
-            var hal = ((IHal) representation).RepresentationOf(resource);
+            var hal = await ((IHal) representation).RepresentationOfAsync(resource);
             hal.Embedded.Should().BeEquivalentTo(new
             {
                 D = 123
             });
         }
 
+        [Fact]
+        public async Task AsyncImplementationTakesPrecedence()
+        {
+            var representation = new SyncAndAsyncRepresentation();
+            var resource = new ResourceModel
+            {
+                A = 1,
+                B = 2,
+                C = 3
+            };
+            
+            var hal = await ((IHal) representation).RepresentationOfAsync(resource);
+            var jObject = JObject.FromObject(hal.State);
+            jObject["Source"].Value<string>().Should().Be("async");
+        }
+        
         private class ResourceModel
         {
             public int A { get; set; }
@@ -85,17 +103,17 @@ namespace Hallo.Test
 
         private class DefaultRepresentation : Hal<ResourceModel> { }
 
-        private class LinkedRepresentation : Hal<ResourceModel>
+        private class LinkedRepresentation : Hal<ResourceModel>, IHalLinks<ResourceModel>
         {
-            protected override IEnumerable<Link> LinksFor(ResourceModel resource)
+            public IEnumerable<Link> LinksFor(ResourceModel resource)
             {
                 yield return new Link("self", "/resource/123");
             }
         }
 
-        private class ModifiedStateRepresentation : Hal<ResourceModel>
+        private class ModifiedStateRepresentation : Hal<ResourceModel>, IHalState<ResourceModel>
         {
-            protected override object StateFor(ResourceModel resource)
+            public object StateFor(ResourceModel resource)
             {
                 return new
                 {
@@ -104,14 +122,35 @@ namespace Hallo.Test
             }
         }
 
-        private class EmbeddedRepresentation : Hal<ResourceModel>
+        private class EmbeddedRepresentation : Hal<ResourceModel>, IHalEmbedded<ResourceModel>
         {
-            protected override object EmbeddedFor(ResourceModel resource)
+            public object EmbeddedFor(ResourceModel resource)
             {
                 return new
                 {
                     D = 123
                 };
+            }
+        }
+
+        private class SyncAndAsyncRepresentation : Hal<ResourceModel>,
+                                                   IHalState<ResourceModel>,
+                                                   IHalStateAsync<ResourceModel>
+        {
+            public object StateFor(ResourceModel resource)
+            {
+                return new
+                {
+                    Source = "sync"
+                };
+            }
+
+            public Task<object> StateForAsync(ResourceModel resource)
+            {
+                return Task.FromResult<object>(new
+                {
+                    Source = "async"
+                });
             }
         }
     }

@@ -16,6 +16,7 @@ namespace Hallo.Test.Integration.TestApi
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<ContactLookup>();
+            services.AddTransient<PersonRepresentation>();
             services.AddTransient<Hal<Person>, PersonRepresentation>();
             services.AddTransient<Hal<PagedList<Person>>, PersonListRepresentation>();
             services.AddTransient<Hal<Order>, OrderRepresentation>();
