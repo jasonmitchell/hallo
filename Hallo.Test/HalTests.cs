@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Hallo.Test
@@ -76,6 +77,22 @@ namespace Hallo.Test
                 D = 123
             });
         }
+
+        [Fact]
+        public async Task AsyncImplementationTakesPrecedence()
+        {
+            var representation = new SyncAndAsyncRepresentation();
+            var resource = new ResourceModel
+            {
+                A = 1,
+                B = 2,
+                C = 3
+            };
+            
+            var hal = await ((IHal) representation).RepresentationOfAsync(resource);
+            var jObject = JObject.FromObject(hal.State);
+            jObject["Source"].Value<string>().Should().Be("async");
+        }
         
         private class ResourceModel
         {
@@ -113,6 +130,27 @@ namespace Hallo.Test
                 {
                     D = 123
                 };
+            }
+        }
+
+        private class SyncAndAsyncRepresentation : Hal<ResourceModel>,
+                                                   IHalState<ResourceModel>,
+                                                   IHalStateAsync<ResourceModel>
+        {
+            public object StateFor(ResourceModel resource)
+            {
+                return new
+                {
+                    Source = "sync"
+                };
+            }
+
+            public Task<object> StateForAsync(ResourceModel resource)
+            {
+                return Task.FromResult<object>(new
+                {
+                    Source = "async"
+                });
             }
         }
     }
