@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Hallo.Serialization
 {
@@ -28,21 +27,12 @@ namespace Hallo.Serialization
     {
         private const string ContentType = "application/hal+json";
         
-        private static readonly JsonSerializerSettings DefaultSerializerSettings = 
-            JsonSerializerSettingsProvider.CreateSerializerSettings();
-
-        static JsonHalOutputFormatter()
-        {
-            DefaultSerializerSettings.Converters.Add(new HalRepresentationConverter());
-            DefaultSerializerSettings.Converters.Add(new LinksConverter());
-        }
-        
         /// <summary>
         /// Initializes a new instance of <see cref="JsonHalOutputFormatter"/> with
         /// default JSON serialization settings
         /// </summary>
         public JsonHalOutputFormatter()
-            : this(DefaultSerializerSettings) {}
+            : this(JsonSerializerSettingsProvider.CreateSerializerSettings()) {}
         
         /// <summary>
         /// Initializes a new instance of <see cref="JsonHalOutputFormatter"/>
@@ -59,6 +49,9 @@ namespace Hallo.Serialization
         public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings, ArrayPool<char> charPool)
             : base(serializerSettings, charPool)
         {
+            serializerSettings.Converters.Add(new HalRepresentationConverter());
+            serializerSettings.Converters.Add(new LinksConverter());
+            
             SupportedMediaTypes.Clear();
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ContentType));
         }
