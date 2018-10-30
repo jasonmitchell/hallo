@@ -14,16 +14,11 @@ namespace Hallo.Serialization
     {
         private const string ContentType = "application/hal+json";
         
-        private static readonly JsonSerializerSettings DefaultSerializerSettings;
+        private static readonly JsonSerializerSettings DefaultSerializerSettings = 
+            JsonSerializerSettingsProvider.CreateSerializerSettings();
 
         static JsonHalOutputFormatter()
         {
-            DefaultSerializerSettings = new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore,
-            };
-            
             DefaultSerializerSettings.Converters.Add(new HalRepresentationConverter());
             DefaultSerializerSettings.Converters.Add(new LinksConverter());
         }
