@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hallo
@@ -63,7 +64,7 @@ namespace Hallo
                 return links.LinksFor(resource);
             }
 
-            return null;
+            return Enumerable.Empty<Link>();
         }
     }
 }
