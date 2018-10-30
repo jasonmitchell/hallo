@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -43,7 +44,7 @@ namespace Hallo.Serialization
         
         private static void ConvertLinks(IEnumerable<Link> links, JObject node, JsonSerializer serializer)
         {
-            if (links == null)
+            if (links == null || !links.Any())
             {
                 return;
             }
