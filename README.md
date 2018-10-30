@@ -128,7 +128,7 @@ public class PersonRepresentation : Hal<Person>,
 
 ### Async Support
 Hallo provides the interfaces `IHalStateAsync<T>`, `IHalEmbeddedAsync<T>` and `IHalLinksAsync<T>`.
-These interfaces define asynchronous version of the `StateFor`, `EmbeddedFor` and `LinksFor` methods.
+These interfaces define asynchronous version of the `StateFor`, `EmbeddedFor` and `LinksFor` methods
 to enable the execution of asynchronous code as part of the HAL document generation process.
 
 #### Example
