@@ -17,7 +17,10 @@ namespace Hallo.Test.Integration.TestApi
     
         public IEnumerable<Link> LinksFor(Person resource)
         {
-            yield return new Link("self", $"/people/{resource.Id}");
+            if (resource.Id != 404)
+            {
+                yield return new Link("self", $"/people/{resource.Id}");
+            }
         }
 
         public async Task<object> EmbeddedForAsync(Person resource)

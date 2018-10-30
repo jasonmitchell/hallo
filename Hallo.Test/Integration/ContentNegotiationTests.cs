@@ -53,6 +53,18 @@ namespace Hallo.Test.Integration
             links["self"].Should().NotBeNull();
             links["self"]["href"].Value<string>().Should().Be("/people/123");
         }
+        
+        [Fact]
+        public async Task NullOrEmptyLinksShouldNotBeInResponse()
+        {
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/people/404");
+
+            var content = await response.Content.ReadAsStringAsync();
+            var json = JsonConvert.DeserializeObject<JObject>(content);
+
+            json.Should().NotContainKey("_links");
+        }
 
         [Fact]
         public async Task SerializesEmbeddedState()
