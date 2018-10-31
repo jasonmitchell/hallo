@@ -52,6 +52,7 @@ namespace Hallo.Serialization
             serializerSettings.Converters.Add(new HalRepresentationConverter());
             serializerSettings.Converters.Add(new LinksConverter());
             
+            SupportedEncodings.Add(Encoding.UTF8);
             SupportedMediaTypes.Clear();
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ContentType));
         }
