@@ -47,11 +47,5 @@ namespace Hallo.Test.Integration
             
             response.Content.Headers.ContentType.MediaType.Should().Be("application/hal+json");
         }
-
-        [Fact(Skip = "TODO")]
-        public void SerializesToJsonWhenNoRepresentationAvailable()
-        {
-            
-        }
     }
 }
