@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Hallo.Test.Serialization
 {
-    public class JsonHalOutputFormatterTests
+    public class HalJsonOutputFormatterTests
     {
         private readonly ServiceCollection _services = new ServiceCollection();
 
@@ -181,7 +181,7 @@ namespace Hallo.Test.Serialization
             var writeContext = new OutputFormatterWriteContext(httpContext, (stream, _) => new StreamWriter(stream), 
                                                               typeof(T), resource);
 
-            var formatter = new JsonHalOutputFormatter();
+            var formatter = new HalJsonOutputFormatter();
             await formatter.WriteResponseBodyAsync(writeContext, Encoding.UTF8);
 
             var body = await ReadHttpResponseBody(httpContext);

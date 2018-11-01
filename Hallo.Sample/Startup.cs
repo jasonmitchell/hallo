@@ -24,7 +24,7 @@ namespace Hallo.Sample
             services.AddMvc(options =>
                 {
                     options.RespectBrowserAcceptHeader = true;
-                    options.OutputFormatters.Add(new JsonHalOutputFormatter());
+                    options.OutputFormatters.Add(new HalJsonOutputFormatter());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             
