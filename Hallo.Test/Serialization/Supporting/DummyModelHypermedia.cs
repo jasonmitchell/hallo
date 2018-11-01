@@ -25,6 +25,16 @@ namespace Hallo.Test.Serialization.Supporting
             yield return new Link("another-resource", $"/dummy-model/another-resource");
         }
     }
+
+    internal class MultiLinkRelationRepresentation : Hal<DummyModel>,
+                                                     IHalLinks<DummyModel>
+    {
+        public IEnumerable<Link> LinksFor(DummyModel resource)
+        {
+            yield return new Link(Link.Self, $"/dummy-model/{resource.Id}");
+            yield return new Link(Link.Self, $"/something-else/{resource.Id}");
+        }
+    }
     
     internal class EmptyLinksRepresentation : Hal<DummyModel>,
                                               IHalLinks<DummyModel>

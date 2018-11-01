@@ -9,7 +9,9 @@ namespace Hallo.Serialization
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var links = ((IEnumerable<Link>) value).ToList();
+            var links = ((IEnumerable<Link>) value).GroupBy(x => x.Rel, x => x)
+                                                   .ToDictionary(x => x.Key, x => x.ToList());
+            
             if (!links.Any())
             {
                 return;
@@ -19,12 +21,31 @@ namespace Hallo.Serialization
 
             foreach (var link in links)
             {
-                // TODO: Link arrays
-                writer.WritePropertyName(link.Rel);
-                WriteLink(writer, link);
+                writer.WritePropertyName(link.Key);
+                
+                if (link.Value.Count > 1)
+                {
+                    WriteLinks(writer, link.Value);
+                }
+                else
+                {
+                    WriteLink(writer, link.Value.Single());
+                }
             }
             
             writer.WriteEndObject();
+        }
+
+        private void WriteLinks(JsonWriter writer, in IEnumerable<Link> links)
+        {
+            writer.WriteStartArray();
+
+            foreach (var link in links)
+            {
+                WriteLink(writer, link);
+            }
+            
+            writer.WriteEndArray();
         }
 
         private void WriteLink(JsonWriter writer, in Link link)
