@@ -11,7 +11,7 @@ namespace Hallo.Test.Integration.TestApi
         {
             services.AddMvc(options =>
                 {
-                    options.OutputFormatters.Add(new JsonHalOutputFormatter());
+                    options.OutputFormatters.Add(new HalJsonOutputFormatter());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

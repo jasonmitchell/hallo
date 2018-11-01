@@ -23,30 +23,30 @@ namespace Hallo.Serialization
     /// </p>
     /// </remarks>
     /// <inheritdoc cref="JsonOutputFormatter"/>
-    public class JsonHalOutputFormatter : JsonOutputFormatter
+    public class HalJsonOutputFormatter : JsonOutputFormatter
     {
         private const string ContentType = "application/hal+json";
         
         /// <summary>
-        /// Initializes a new instance of <see cref="JsonHalOutputFormatter"/> with
+        /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/> with
         /// default JSON serialization settings
         /// </summary>
-        public JsonHalOutputFormatter()
+        public HalJsonOutputFormatter()
             : this(JsonSerializerSettingsProvider.CreateSerializerSettings()) {}
         
         /// <summary>
-        /// Initializes a new instance of <see cref="JsonHalOutputFormatter"/>
+        /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/>
         /// </summary>
         /// <param name="serializerSettings"><see cref="JsonSerializerSettings"/></param>
-        public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings)
+        public HalJsonOutputFormatter(JsonSerializerSettings serializerSettings)
             : this(serializerSettings, ArrayPool<char>.Shared) {}
 
         /// <summary>
-        /// Initializes a new instance of <see cref="JsonHalOutputFormatter"/>
+        /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/>
         /// </summary>
         /// <param name="serializerSettings"><see cref="JsonSerializerSettings"/></param>
         /// <param name="charPool"></param>
-        public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings, ArrayPool<char> charPool)
+        public HalJsonOutputFormatter(JsonSerializerSettings serializerSettings, ArrayPool<char> charPool)
             : base(serializerSettings, charPool)
         {
             serializerSettings.Converters.Add(new HalRepresentationConverter());
