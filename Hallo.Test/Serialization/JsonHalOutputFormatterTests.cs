@@ -67,6 +67,24 @@ namespace Hallo.Test.Serialization
             links["self"]["href"].Value<string>().Should().Be("/dummy-model/123");
             links["another-resource"]["href"].Value<string>().Should().Be("/dummy-model/another-resource");
         }
+
+        [Fact]
+        public async Task SupportsMultipleLinksPerRelation()
+        {
+            _services.AddTransient<Hal<DummyModel>, MultiLinkRelationRepresentation>();
+
+            var json = await Format(new DummyModel
+            {
+                Id = 123,
+                Property = "test"
+            });
+            
+            json.Should().ContainKeys("id", "property", "_links");
+            var links = json.Value<JObject>("_links");
+            links.Should().ContainKeys("self");
+
+            links["self"].As<JArray>().Should().HaveCount(2);
+        }
         
         [Fact]
         public async Task DoesNotOutputLinksWhenEmptyLinksCollectionGenerated()
