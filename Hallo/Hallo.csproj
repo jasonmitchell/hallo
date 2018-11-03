@@ -8,10 +8,7 @@
         <PackageVersion>1.0.0</PackageVersion>
         <PackageId>Hallo</PackageId>
         <Authors>Jason Mitchell</Authors>
-        <Description>
-            Hallo is a content negotiated implementation of the HAL 
-            hypermedia format for ASP.NET Core.
-        </Description>
+        <Description>Hallo is a content negotiated implementation of the HAL hypermedia format for ASP.NET Core.</Description>
         <PackageProjectUrl>https://github.com/jasonmitchell/hallo</PackageProjectUrl>
         <RepositoryUrl>https://github.com/jasonmitchell/hallo</RepositoryUrl>
         <PackageTags>HAL;HAL+JSON;Hypermedia</PackageTags>
