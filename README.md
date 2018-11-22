@@ -27,7 +27,7 @@ content negotiation for HAL responses:
 services.AddMvc(options =>
 {
     options.RespectBrowserAcceptHeader = true;
-    options.OutputFormatters.Add(new JsonHalOutputFormatter());
+    options.OutputFormatters.Add(new HalJsonOutputFormatter());
 })
 ```
 
