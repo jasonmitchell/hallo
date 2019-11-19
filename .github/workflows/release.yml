@@ -1,0 +1,24 @@
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test --configuration Release --no-build
+    - name: Pack
+      run: dotnet pack Hallo --configuration Release --no-build --include-symbols -o ./dist
+    - name: Publish
+      run: dotnet nuget push --source nuget.org --api-key $NUGET_API_KEY ./dist/*.nupkg
