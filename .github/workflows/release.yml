@@ -6,6 +6,7 @@ on:
 env:
   NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
+name: Release NuGet Package
 jobs:
   release:
     runs-on: ubuntu-latest
