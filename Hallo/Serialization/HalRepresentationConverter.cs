@@ -1,62 +1,60 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Hallo.Serialization
 {
-    internal class HalRepresentationConverter : JsonConverter
+    internal class HalRepresentationConverter : JsonConverter<HalRepresentation>
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            var representation = (HalRepresentation) value;
-            var root = new JObject();
-            
-            ConvertState(representation.State, root, serializer);
-            ConvertEmbedded(representation.Embedded, root, serializer);
-            ConvertLinks(representation.Links, root, serializer);
+        public override bool CanConvert(Type objectType) 
+            => typeof(HalRepresentation).IsAssignableFrom(objectType);
 
-            root.WriteTo(writer);
+        public override HalRepresentation Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) 
+            => throw new NotImplementedException();
+
+        public override void Write(Utf8JsonWriter writer, HalRepresentation value, JsonSerializerOptions options)
+        {
+            writer.WriteStartObject();
+            WriteState(writer, value.State, options);
+            WriteEmbedded(writer, value.Embedded, options);
+            WriteLinks(writer, value.Links, options);
+            writer.WriteEndObject();
         }
 
-        private static void ConvertState(object state, JObject node, JsonSerializer serializer)
-        {
-            if (state == null)
-            {
-                return;
-            }
-
-            var stateNode  = JObject.FromObject(state, serializer);
-            node.Add(stateNode.Children<JProperty>());
-        }
+        private static void WriteState(Utf8JsonWriter writer, object state, JsonSerializerOptions options) 
+            => WriteObjectProperties(writer, state, options);
         
-        private static void ConvertEmbedded(object embedded, JObject node, JsonSerializer serializer)
+        private static void WriteEmbedded(Utf8JsonWriter writer, object? embedded, JsonSerializerOptions options)
         {
             if (embedded == null)
             {
                 return;
             }
-
-            var embeddedNode = JObject.FromObject(embedded, serializer);
-            node.Add("_embedded", embeddedNode);
+            
+            writer.WriteStartObject("_embedded");
+            WriteObjectProperties(writer, embedded, options);
+            writer.WriteEndObject();
         }
-        
-        private static void ConvertLinks(IEnumerable<Link> links, JObject node, JsonSerializer serializer)
+
+        private static void WriteLinks(Utf8JsonWriter writer, IEnumerable<Link> links, JsonSerializerOptions options)
         {
             if (links == null || !links.Any())
             {
                 return;
             }
-
-            var linksNode = JObject.FromObject(links, serializer);
-            node.Add("_links", linksNode);
+            
+            writer.WritePropertyName("_links");
+            var linkConverter = (LinksConverter) options.GetConverter(typeof(IEnumerable<Link>));
+            linkConverter.Write(writer, links, options);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-            => reader.Value;
-        
-        public override bool CanConvert(Type objectType) 
-            => typeof(HalRepresentation).IsAssignableFrom(objectType);
+        private static void WriteObjectProperties(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
+        {
+            var json = JsonDocument.Parse(JsonSerializer.Serialize(value, options));
+            foreach (var jsonProperty in json.RootElement.EnumerateObject()) 
+                jsonProperty.WriteTo(writer);
+        }
     }
 }

@@ -3,10 +3,9 @@ using Hallo.Sample.Models;
 using Hallo.Sample.Models.Hypermedia;
 using Hallo.Serialization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Hallo.Sample
 {
@@ -21,13 +20,12 @@ namespace Hallo.Sample
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-                {
-                    options.RespectBrowserAcceptHeader = true;
-                    options.OutputFormatters.Add(new HalJsonOutputFormatter());
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+            services.AddControllers(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+                options.OutputFormatters.Add(new HalJsonOutputFormatter());
+            });
+
             services.AddSingleton<PeopleRepository>();
             
             services.AddTransient<PersonRepresentation>();
@@ -35,7 +33,7 @@ namespace Hallo.Sample
             services.AddTransient<Hal<PagedList<Person>>, PersonListRepresentation>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -47,7 +45,12 @@ namespace Hallo.Sample
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

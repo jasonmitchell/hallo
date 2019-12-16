@@ -1,6 +1,6 @@
+using System.Text.Json;
 using Hallo.Serialization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hallo.Test.Integration.TestApi
@@ -9,11 +9,11 @@ namespace Hallo.Test.Integration.TestApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options =>
-                {
-                    options.OutputFormatters.Add(new HalJsonOutputFormatter());
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers(options =>
+            {
+                var jsonOptions = new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
+                options.OutputFormatters.Add(new HalJsonOutputFormatter(jsonOptions));
+            });
 
             services.AddTransient<ContactLookup>();
             services.AddTransient<PersonRepresentation>();
@@ -22,7 +22,11 @@ namespace Hallo.Test.Integration.TestApi
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

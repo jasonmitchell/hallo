@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Hallo.Test.Integration.TestApi
 {
     public class Person

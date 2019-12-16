@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Hallo.Serialization
 {
-    internal class LinksConverter : JsonConverter
+    internal class LinksConverter : JsonConverter<IEnumerable<Link>>
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override IEnumerable<Link> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) 
+            => throw new NotImplementedException();
+
+        public override void Write(Utf8JsonWriter writer, IEnumerable<Link> value, JsonSerializerOptions options)
         {
-            var links = ((IEnumerable<Link>) value).GroupBy(x => x.Rel, x => x)
-                                                   .ToDictionary(x => x.Key, x => x.ToList());
+            var links = value.GroupBy(x => x.Rel, x => x)
+                .ToDictionary(x => x.Key, x => x.ToList());
             
             if (!links.Any())
             {
@@ -35,8 +39,8 @@ namespace Hallo.Serialization
             
             writer.WriteEndObject();
         }
-
-        private void WriteLinks(JsonWriter writer, in IEnumerable<Link> links)
+        
+        private void WriteLinks(Utf8JsonWriter writer, in IEnumerable<Link> links)
         {
             writer.WriteStartArray();
 
@@ -48,7 +52,7 @@ namespace Hallo.Serialization
             writer.WriteEndArray();
         }
 
-        private void WriteLink(JsonWriter writer, in Link link)
+        private void WriteLink(Utf8JsonWriter writer, in Link link)
         {
             writer.WriteStartObject();
 
@@ -58,13 +62,13 @@ namespace Hallo.Serialization
                 {
                     case nameof(Link.Href):
                         writer.WritePropertyName("href");
-                        writer.WriteValue(link.Href);
+                        writer.WriteStringValue(link.Href);
                         break;
                     case nameof(Link.Templated):
                         if (link.Templated)
                         {
                             writer.WritePropertyName("templated");
-                            writer.WriteValue(true);
+                            writer.WriteBooleanValue(true);
                         }
                         break;
                 }
@@ -72,11 +76,5 @@ namespace Hallo.Serialization
 
             writer.WriteEndObject();
         }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-            => reader.Value;
-        
-        public override bool CanConvert(Type objectType) 
-            => typeof(IEnumerable<Link>).IsAssignableFrom(objectType);
     }
 }

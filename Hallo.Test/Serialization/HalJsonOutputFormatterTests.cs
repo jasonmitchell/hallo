@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Hallo.Serialization;
@@ -181,8 +182,8 @@ namespace Hallo.Test.Serialization
             var writeContext = new OutputFormatterWriteContext(httpContext, (stream, _) => new StreamWriter(stream), 
                                                               typeof(T), resource);
 
-            var formatter = new HalJsonOutputFormatter();
-            await formatter.WriteResponseBodyAsync(writeContext, Encoding.UTF8);
+            var formatter = new HalJsonOutputFormatter(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+            await formatter.WriteAsync(writeContext);
 
             var body = await ReadHttpResponseBody(httpContext);
             return JsonConvert.DeserializeObject<JObject>(body);
