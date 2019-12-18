@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Hallo.Sample.Models;
-using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
 
 namespace Hallo.Sample.Data
 {
@@ -12,7 +12,7 @@ namespace Hallo.Sample.Data
         private readonly string _dataPath;
         private Person[] _people;
 
-        public PeopleRepository(IHostingEnvironment hostingEnvironment)
+        public PeopleRepository(IHostEnvironment hostingEnvironment)
         {
             _dataPath = Path.Combine(hostingEnvironment.ContentRootPath, "Data/people.json");
         }
@@ -25,7 +25,7 @@ namespace Hallo.Sample.Data
             }
             
             var json = File.ReadAllText(_dataPath);
-            _people = JsonConvert.DeserializeObject<Person[]>(json);
+            _people = JsonSerializer.Deserialize<Person[]>(json);
         }
 
         public PagedList<Person> List(Paging paging)

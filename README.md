@@ -1,5 +1,5 @@
 # Hallo
-[![Build status](https://ci.appveyor.com/api/projects/status/h1a8hd8i9aj6upwu/branch/master?svg=true)](https://ci.appveyor.com/project/jasonmitchell/hallo/branch/master)
+![](https://github.com/jasonmitchell/hallo/workflows/Build%20Pull%20Request/badge.svg)
 [![NuGet](https://img.shields.io/nuget/v/Hallo.svg?style=flat)](https://www.nuget.org/packages/Hallo/)
 
 Hallo is an implementation of the [Hypertext Application Language (HAL)](http://stateless.co/hal_specification.html)
@@ -20,11 +20,11 @@ Hallo is available on [Nuget](https://www.nuget.org/packages/Hallo/): `dotnet ad
 Hallo does not require any changes to existing models or controllers so it can easily be added to an 
 existing project.  
 
-To get started using Hallo you need to first register the output formatter in ASP.NET Core MVC to enable
+To get started using Hallo you need to first register the output formatter in ASP.NET Core to enable
 content negotiation for HAL responses:
 
 ```csharp
-services.AddMvc(options =>
+services.AddControllers(options =>
 {
     options.RespectBrowserAcceptHeader = true;
     options.OutputFormatters.Add(new HalJsonOutputFormatter());

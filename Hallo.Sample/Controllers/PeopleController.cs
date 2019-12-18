@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Hallo.Sample.Data;
 using Hallo.Sample.Models;
 using Microsoft.AspNetCore.Mvc;

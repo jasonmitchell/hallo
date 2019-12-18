@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AssemblyName>Hallo</AssemblyName>
         <Version>1.0.0</Version>
@@ -13,12 +13,18 @@
         <RepositoryUrl>https://github.com/jasonmitchell/hallo</RepositoryUrl>
         <PackageTags>HAL;HAL+JSON;Hypermedia</PackageTags>
     </PropertyGroup>
-
+    
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>true</WarningsAsErrors>
+    </PropertyGroup>
+    
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.1.2" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    
+    <ItemGroup>
       <PackageReference Include="MinVer" Version="2.0.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     </ItemGroup>
 
 </Project>
