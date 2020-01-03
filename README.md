@@ -52,7 +52,7 @@ public class PersonRepresentation : Hal<Person>,
     public IEnumerable<Link> LinksFor(Person resource)
     {
         yield return new Link(Link.Self, $"/people/{resource.Id}");
-        yield return new Link("contacts", $"/people{resource.Id}/contacts");
+        yield return new Link("contacts", $"/people/{resource.Id}/contacts");
     }
 
     public object EmbeddedFor(Person resource)
@@ -90,7 +90,7 @@ will produce the result:
       "href": "/people/1"
     },
     "contacts": {
-      "href": "/people1/contacts"
+      "href": "/people/1/contacts"
     }
   }
 }
@@ -140,7 +140,7 @@ public class PersonRepresentation : Hal<Person>,
     public IEnumerable<Link> LinksFor(Person resource)
     {
         yield return new Link(Link.Self, $"/people/{resource.Id}");
-        yield return new Link("contacts", $"/people{resource.Id}/contacts");
+        yield return new Link("contacts", $"/people/{resource.Id}/contacts");
     }
 
     public async Task<object> EmbeddedForAsync(Person resource)
@@ -170,7 +170,7 @@ public class PersonRepresentation : Hal<Person>,
     public IEnumerable<Link> LinksFor(Person resource)
     {
         yield return new Link(Link.Self, $"/people/{resource.Id}");
-        yield return new Link("contacts", $"/people{resource.Id}/contacts");
+        yield return new Link("contacts", $"/people/{resource.Id}/contacts");
     }
 
     public object EmbeddedFor(Person resource)
@@ -209,7 +209,7 @@ The above example will produce a response of:
           "href": "/people/321"
         },
         "contacts": {
-          "href": "/people321/contacts"
+          "href": "/people/321/contacts"
         }
       }
     }
@@ -219,7 +219,71 @@ The above example will produce a response of:
       "href": "/people/1"
     },
     "contacts": {
-      "href": "/people1/contacts"
+      "href": "/people/1/contacts"
+    }
+  }
+}
+```
+
+### Prefixing Links With a Virtual Path
+If a deployed API is available via a virtual path such as an IIS sub-application/virtual directory, API 
+gateway or reverse proxy it may be necessary to prefix links with the virtual path.  For example, an API 
+may be developed locally with the URL `http://localhost:5000/people/{id}` however the API is deployed 
+to production behind an API gateway with the URL `http://my-app/address-book/people/{id}`.
+In this scenario it may be preferable to generate links prefixed with `/address-book`.
+
+This can be easily achieved by ensuring the 
+[PathBase](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.httprequest.pathbase?view=aspnetcore-3.1)
+property for the request is set and using the ASP.NET Core 
+[IUrlHelper](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iurlhelper?view=aspnetcore-3.1)
+to create links rather than the string building approach used in this README.
+
+#### Example
+The following ASP.NET Core services need to be registered on startup:
+```csharp
+services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+services.AddScoped(x => {
+    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+    var factory = x.GetRequiredService<IUrlHelperFactory>();
+    return factory.GetUrlHelper(actionContext);
+});
+```
+
+The `IUrlHelper` can then be injected into representations and used to create links:
+```csharp
+public class PersonRepresentation : Hal<Person>, 
+                                    IHalLinks<Person>
+{
+    private readonly IUrlHelper _urlHelper;
+
+    public PersonRepresentation(IUrlHelper urlHelper)
+    {
+        _urlHelper = urlHelper;
+    }
+
+    public IEnumerable<Link> LinksFor(Person resource)
+    {
+        var self = _urlHelper.Action("Get", "People", new {id = resource.Id});
+        var contacts = _urlHelper.Action("List", "Contacts", new {personId = resource.Id});
+
+        yield return new Link(Link.Self, self);
+        yield return new Link("contacts", contacts);
+    }
+}
+```
+
+Assuming a `PathBase` value of `/address-book`, the above example will produce a response of:
+```json
+{
+  "id": 1,
+  "firstName": "Geoffrey",
+  "lastName": "Merrill",
+  "_links": {
+    "self": {
+      "href": "/address-book/people/1"
+    },
+    "contacts": {
+      "href": "/address-book/people/1/contacts"
     }
   }
 }
