@@ -12,6 +12,7 @@
         <PackageProjectUrl>https://github.com/jasonmitchell/hallo</PackageProjectUrl>
         <RepositoryUrl>https://github.com/jasonmitchell/hallo</RepositoryUrl>
         <PackageTags>HAL;HAL+JSON;Hypermedia</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     
     <PropertyGroup>
