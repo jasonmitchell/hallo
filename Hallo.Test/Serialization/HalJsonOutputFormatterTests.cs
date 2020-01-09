@@ -175,6 +175,21 @@ namespace Hallo.Test.Serialization
             items[0]["_embedded"].Should().BeNull();
             items[0]["id"].Should().NotBeNull();
         }
+
+        [Fact]
+        public async Task OutputsStandardJsonWhenHalRepresentationIsMissing()
+        {
+            var json = await Format(new DummyModel
+            {
+                Id = 1, 
+                Property = "test"
+            });
+
+            json.Should().ContainKeys("id", "property");
+            json.Value<int>("id").Should().Be(1);
+            json.Value<string>("property").Should().Be("test");
+            json.Should().NotContainKeys("_links", "_embedded");
+        }
         
         private async Task<JObject> Format<T>(T resource)
         {

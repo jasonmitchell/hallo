@@ -53,7 +53,7 @@ namespace Hallo.Serialization
             var representationGenerator = GetRepresentationGenerator(context.HttpContext.RequestServices, context.ObjectType);
             if (representationGenerator == null)
             {
-                await WriteResponseBodyAsync(context);
+                await WriteResponseBodyAsync(context, Encoding.UTF8);
                 return;
             }
 
