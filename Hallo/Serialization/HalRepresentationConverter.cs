@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Hallo.Serialization
 {
-    internal class HalRepresentationConverter : JsonConverter<HalRepresentation>
+    public class HalRepresentationConverter : JsonConverter<HalRepresentation>
     {
         public override bool CanConvert(Type objectType) 
             => typeof(HalRepresentation).IsAssignableFrom(objectType);
