@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Hallo.Serialization
 {
-    internal class LinksConverter : JsonConverter<IEnumerable<Link>>
+    public class LinksConverter : JsonConverter<IEnumerable<Link>>
     {
         public override IEnumerable<Link> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) 
             => throw new NotImplementedException();
