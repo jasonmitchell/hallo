@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Hallo.Test.Integration.TestApi;
@@ -31,8 +32,16 @@ namespace Hallo.Test.Integration
             
             var links = json.Value<JObject>("_links");
             links.Should().NotBeNull();
-            links["self"].Should().NotBeNull();
-            links["self"]["href"].Value<string>().Should().Be("/people/123");
+            var self = links["self"];
+            self.Should().NotBeNull();
+            self["href"].Value<string>().Should().Be("/people/123");
+            self["title"].Value<string>().Should().Be("A Title");
+            self["name"].Value<string>().Should().Be("a name");
+            self["profile"].Value<string>().Should().Be("http://example.com/profile");
+            self["deprecation"].Value<string>().Should().Be("http://example.com/deprecated");
+            self["type"].Value<string>().Should().Be("application/hal+json");
+            self["hreflang"].Value<string>().Should().Be("en-IE");
+
             
             var embedded = json.Value<JObject>("_embedded");
             embedded.Should().NotBeNull();

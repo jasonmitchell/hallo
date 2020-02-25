@@ -61,14 +61,48 @@ namespace Hallo.Serialization
                 switch (info.Name)
                 {
                     case nameof(Link.Href):
-                        writer.WritePropertyName("href");
-                        writer.WriteStringValue(link.Href);
+                        writer.WriteString("href", link.Href);
                         break;
                     case nameof(Link.Templated):
                         if (link.Templated)
                         {
-                            writer.WritePropertyName("templated");
-                            writer.WriteBooleanValue(true);
+                            writer.WriteBoolean("templated", true);
+                        }
+                        break;
+                    case nameof(Link.Name):
+                        if (link.Name != null)
+                        {
+                            writer.WriteString("name", link.Name);
+                        }
+                        break;
+                    case nameof(Link.Deprecation):
+                        if (link.Deprecation != null)
+                        {
+                            writer.WriteString("deprecation", link.Deprecation.ToString());
+                        }
+                        break;
+                    case nameof(Link.Profile):
+                        if (link.Profile != null)
+                        {
+                            writer.WriteString("profile", link.Profile.ToString());
+                        }
+                        break;
+                    case nameof(Link.Title):
+                        if (link.Profile != null)
+                        {
+                            writer.WriteString("title", link.Title);
+                        }
+                        break;
+                    case nameof(Link.Type):
+                        if (link.Profile != null)
+                        {
+                            writer.WriteString("type", link.Type);
+                        }
+                        break;
+                    case nameof(Link.HrefLang):
+                        if (link.Profile != null)
+                        {
+                            writer.WriteString("hreflang", link.HrefLang);
                         }
                         break;
                 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +19,9 @@ namespace Hallo.Test.Integration.TestApi
         {
             if (resource.Id != 404)
             {
-                yield return new Link("self", $"/people/{resource.Id}");
+                yield return new Link("self", $"/people/{resource.Id}", "application/hal+json",
+                    new Uri("http://example.com/deprecated"), "a name", new Uri("http://example.com/profile"),
+                    "A Title", "en-IE");
             }
         }
 
