@@ -18,8 +18,8 @@ namespace Hallo.Test
         [Fact]
         public void Equatable()
         {
-            var linkA = new Link("self", "/href");
-            var linkB = new Link("self", "/href");
+            var linkA = new Link("self", "/href", "application/json", new UriBuilder().Uri, "A Link", new UriBuilder().Uri, "A Link Title", "en-IE");
+            var linkB = new Link("self", "/href", "application/json", new UriBuilder().Uri, "A Link", new UriBuilder().Uri, "A Link Title", "en-IE");
 
             linkA.Equals(linkB).Should().Be(true);
         }
