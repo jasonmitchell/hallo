@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -25,13 +26,18 @@ namespace Hallo.Serialization
     public class HalJsonOutputFormatter : SystemTextJsonOutputFormatter
     {
         private const string ContentType = "application/hal+json";
+
+        private static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new()
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
         
         /// <summary>
         /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/> with
         /// default JSON serialization settings
         /// </summary>
         public HalJsonOutputFormatter()
-            : this(new JsonSerializerOptions()) {}
+            : this(DefaultJsonSerializerOptions) {}
         
         /// <summary>
         /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/>

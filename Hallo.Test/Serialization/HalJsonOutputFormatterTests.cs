@@ -1,14 +1,8 @@
-using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Hallo.Serialization;
 using Hallo.Test.Serialization.Supporting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -16,6 +10,7 @@ namespace Hallo.Test.Serialization
 {
     public class HalJsonOutputFormatterTests
     {
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
         private readonly ServiceCollection _services = new ServiceCollection();
 
         [Fact]
@@ -23,11 +18,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, DefaultRepresentation>();
 
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().ContainKeys("id", "property");
             json["id"].Value<int>().Should().Be(123);
@@ -39,11 +34,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, ModifiedStateRepresentation>();
 
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().ContainKey("property");
             json.Should().NotContainKey("id");
@@ -55,11 +50,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, LinkedRepresentation>();
 
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().ContainKeys("id", "property", "_links");
             
@@ -74,11 +69,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, MultiLinkRelationRepresentation>();
 
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
             
             json.Should().ContainKeys("id", "property", "_links");
             var links = json.Value<JObject>("_links");
@@ -92,11 +87,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, EmptyLinksRepresentation>();
             
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().NotContainKey("_links");
         }
@@ -106,11 +101,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, DefaultRepresentation>();
             
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().NotContainKey("_links");
         }
@@ -120,11 +115,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, EmbeddedRepresentation>();
 
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().ContainKeys("id", "property", "_embedded");
             
@@ -138,11 +133,11 @@ namespace Hallo.Test.Serialization
         {
             _services.AddTransient<Hal<DummyModel>, DefaultRepresentation>();
             
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 123,
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().NotContainKey("_embedded");
         }
@@ -153,7 +148,7 @@ namespace Hallo.Test.Serialization
             _services.AddTransient<IHalLinks<DummyModel>, LinkedRepresentation>();
             _services.AddTransient<Hal<PagedList<DummyModel>>, DummyModelListRepresentation>();
 
-            var json = await Format(new PagedList<DummyModel>
+            var json = await TestResponseContentFormatter.Format(new PagedList<DummyModel>
             {
                 CurrentPage = 1,
                 TotalItems = 2,
@@ -163,7 +158,7 @@ namespace Hallo.Test.Serialization
                     new DummyModel { Id = 123, Property = "Test" },
                     new DummyModel { Id = 321, Property = "tseT" }
                 }
-            });
+            }, _services, _jsonSerializerOptions);
 
             var embedded = json.Value<JObject>("_embedded");
             embedded.Should().NotBeNull();
@@ -179,49 +174,16 @@ namespace Hallo.Test.Serialization
         [Fact]
         public async Task OutputsStandardJsonWhenHalRepresentationIsMissing()
         {
-            var json = await Format(new DummyModel
+            var json = await TestResponseContentFormatter.Format(new DummyModel
             {
                 Id = 1, 
                 Property = "test"
-            });
+            }, _services, _jsonSerializerOptions);
 
             json.Should().ContainKeys("id", "property");
             json.Value<int>("id").Should().Be(1);
             json.Value<string>("property").Should().Be("test");
             json.Should().NotContainKeys("_links", "_embedded");
-        }
-        
-        private async Task<JObject> Format<T>(T resource)
-        {
-            var httpContext = CreateHttpContext();
-            var writeContext = new OutputFormatterWriteContext(httpContext, (stream, _) => new StreamWriter(stream), 
-                                                              typeof(T), resource);
-
-            var formatter = new HalJsonOutputFormatter(new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
-            await formatter.WriteAsync(writeContext);
-
-            var body = await ReadHttpResponseBody(httpContext);
-            return JsonConvert.DeserializeObject<JObject>(body);
-        }
-
-        private DefaultHttpContext CreateHttpContext()
-        {
-            var httpContext = new DefaultHttpContext
-            {
-                RequestServices = _services.BuildServiceProvider()
-            };
-
-            httpContext.Response.Body = new MemoryStream();
-            return httpContext;
-        }
-        
-        private static async Task<string> ReadHttpResponseBody(HttpContext httpContext)
-        {
-            httpContext.Response.Body.Seek(0L, SeekOrigin.Begin);
-            using (var reader = new StreamReader(httpContext.Response.Body, Encoding.UTF8))
-            {
-                return await reader.ReadToEndAsync();
-            }
         }
     }
 }
