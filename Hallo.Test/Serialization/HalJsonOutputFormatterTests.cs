@@ -185,5 +185,17 @@ namespace Hallo.Test.Serialization
             json.Value<string>("property").Should().Be("test");
             json.Should().NotContainKeys("_links", "_embedded");
         }
+
+        [Fact]
+        public async Task SetsJsonContentTypeWhenHalRepresentationIsMissing()
+        {
+            var response = await TestResponseContentFormatter.GetResponse(new DummyModel
+            {
+                Id = 1,
+                Property = "test"
+            }, _services, _jsonSerializerOptions);
+
+            response.ContentType.Should().Be("application/json");
+        }
     }
 }

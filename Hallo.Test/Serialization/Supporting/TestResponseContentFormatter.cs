@@ -13,7 +13,7 @@ namespace Hallo.Test.Serialization.Supporting
 {
     internal static class TestResponseContentFormatter
     {
-        public static async Task<string> FormatRaw<T>(T resource, IServiceCollection services, JsonSerializerOptions jsonSerializerOptions = null)
+        public static async Task<HttpResponse> GetResponse<T>(T resource, IServiceCollection services, JsonSerializerOptions jsonSerializerOptions = null)
         {
             var httpContext = CreateHttpContext(services);
             var writeContext = new OutputFormatterWriteContext(httpContext, (stream, _) => new StreamWriter(stream), 
@@ -22,7 +22,13 @@ namespace Hallo.Test.Serialization.Supporting
             var formatter = jsonSerializerOptions != null ? new HalJsonOutputFormatter(jsonSerializerOptions) : new HalJsonOutputFormatter();
             await formatter.WriteAsync(writeContext);
 
-            var body = await ReadHttpResponseBody(httpContext);
+            return httpContext.Response;
+        }
+        
+        public static async Task<string> FormatRaw<T>(T resource, IServiceCollection services, JsonSerializerOptions jsonSerializerOptions = null)
+        {
+            var response = await GetResponse(resource, services, jsonSerializerOptions);
+            var body = await ReadHttpResponseBody(response);
             return body;
         }
         
@@ -43,10 +49,10 @@ namespace Hallo.Test.Serialization.Supporting
             return httpContext;
         }
         
-        private static async Task<string> ReadHttpResponseBody(HttpContext httpContext)
+        private static async Task<string> ReadHttpResponseBody(HttpResponse response)
         {
-            httpContext.Response.Body.Seek(0L, SeekOrigin.Begin);
-            using var reader = new StreamReader(httpContext.Response.Body, Encoding.UTF8);
+            response.Body.Seek(0L, SeekOrigin.Begin);
+            using var reader = new StreamReader(response.Body, Encoding.UTF8);
             
             return await reader.ReadToEndAsync();
         }
