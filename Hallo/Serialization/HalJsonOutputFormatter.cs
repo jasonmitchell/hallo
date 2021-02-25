@@ -59,6 +59,7 @@ namespace Hallo.Serialization
             var representationGenerator = GetRepresentationGenerator(context.HttpContext.RequestServices, context.ObjectType);
             if (representationGenerator == null)
             {
+                context.HttpContext.Response.ContentType = "application/json";
                 await WriteResponseBodyAsync(context, Encoding.UTF8);
                 return;
             }
