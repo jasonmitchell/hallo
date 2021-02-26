@@ -59,7 +59,7 @@ namespace Hallo.AspNetCore.Mvc
 
         public override async Task WriteAsync(OutputFormatterWriteContext context)
         {
-            var json = await HalJsonGenerator.GenerateHalJson(context.HttpContext, context.Object);
+            var json = await HalJsonGenerator.GenerateHalJson(context.HttpContext, context.Object, SerializerOptions);
             if (json == null)
             {
                 context.HttpContext.Response.ContentType = "application/json";
