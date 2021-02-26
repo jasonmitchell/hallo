@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Startup.fs" />
+        <Compile Include="Program.fs" />
+
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Hallo.AspNetCore.Sample\Hallo.AspNetCore.Sample.csproj" />
+        <ProjectReference Include="..\Hallo.AspNetCore\Hallo.AspNetCore.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Giraffe" Version="5.0.0-rc-6" />
+        <PackageReference Include="FSharp.SystemTextJson" Version="0.14.8" />
+    </ItemGroup>
+    
+
+</Project>
