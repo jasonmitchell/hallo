@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hallo\Hallo.csproj" />
+      <ProjectReference Include="..\Hallo.AspNetCore.Mvc\Hallo.AspNetCore.Mvc.csproj" />
     </ItemGroup>
 
 </Project>
