@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Hallo.Sample
+namespace Hallo.AspNetCore.Sample
 {
     public class Program
     {

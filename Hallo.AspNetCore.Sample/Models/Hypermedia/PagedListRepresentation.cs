@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hallo.Sample.Models.Hypermedia
+namespace Hallo.AspNetCore.Sample.Models.Hypermedia
 {
     public abstract class PagedListRepresentation<TItem> : Hal<PagedList<TItem>>, IHalState<PagedList<TItem>>,
                                                            IHalEmbedded<PagedList<TItem>>, IHalLinks<PagedList<TItem>>

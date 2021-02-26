@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Hallo.Sample.Models
+namespace Hallo.AspNetCore.Sample.Models
 {
     public class PagedList<T>
     {

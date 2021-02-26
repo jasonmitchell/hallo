@@ -1,8 +1,8 @@
-using Hallo.Sample.Data;
-using Hallo.Sample.Models;
+using Hallo.AspNetCore.Mvc.Sample.Data;
+using Hallo.AspNetCore.Mvc.Sample.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hallo.Sample.Controllers
+namespace Hallo.AspNetCore.Mvc.Sample.Controllers
 {
     [Route("[controller]")]
     [ApiController]

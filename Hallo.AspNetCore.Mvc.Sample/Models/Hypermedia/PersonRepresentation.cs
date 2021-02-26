@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hallo.Sample.Models.Hypermedia
+namespace Hallo.AspNetCore.Mvc.Sample.Models.Hypermedia
 {
     public class PersonRepresentation : Hal<Person>, 
                                         IHalLinks<Person>, 
