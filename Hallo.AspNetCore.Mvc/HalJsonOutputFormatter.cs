@@ -32,9 +32,7 @@ namespace Hallo.AspNetCore.Mvc
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
-
-        private readonly HalJsonGenerator halJsonGenerator = new();
-
+        
         /// <summary>
         /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/> with
         /// default JSON serialization settings
@@ -61,7 +59,7 @@ namespace Hallo.AspNetCore.Mvc
 
         public override async Task WriteAsync(OutputFormatterWriteContext context)
         {
-            var json = await halJsonGenerator.GenerateHalJson(context.HttpContext, context.Object);
+            var json = await HalJsonGenerator.GenerateHalJson(context.HttpContext, context.Object);
             if (json == null)
             {
                 context.HttpContext.Response.ContentType = "application/json";

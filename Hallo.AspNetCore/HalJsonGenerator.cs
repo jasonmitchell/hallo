@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Hallo.AspNetCore
 {
-    public class HalJsonGenerator
+    public static class HalJsonGenerator
     {
-        public async Task HalHandler(HttpContext context, Object halObject)
+        public static async Task HalHandler(HttpContext context, Object halObject)
         {
             var json = await GenerateHalJson(context, halObject);
             if (json == null)
@@ -24,7 +24,7 @@ namespace Hallo.AspNetCore
             await context.Response.WriteAsync(json);
         }
 
-        public async Task<string> GenerateHalJson(HttpContext context, Object halObject,
+        public static async Task<string> GenerateHalJson(HttpContext context, Object halObject,
             JsonSerializerOptions serializerOptions = null)
         {
             var representationGenerator = GetRepresentationGenerator(context.RequestServices, halObject.GetType());

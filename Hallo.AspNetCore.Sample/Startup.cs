@@ -48,8 +48,7 @@ namespace Hallo.AspNetCore.Sample
                 {
                     var peopleRepo = context.RequestServices.GetRequiredService<PeopleRepository>();
                     var model = peopleRepo.List(new Paging());
-                    var halJsonGenerator = new HalJsonGenerator();
-                    await halJsonGenerator.HalHandler(context, model);
+                    await HalJsonGenerator.HalHandler(context, model);
                 });
                 
                 endpoints.MapGet("/people/{id:int}", async context =>
@@ -57,8 +56,7 @@ namespace Hallo.AspNetCore.Sample
                     var peopleRepo = context.RequestServices.GetRequiredService<PeopleRepository>();
                     var personId = int.Parse(context.Request.RouteValues["id"].ToString());
                     var model = peopleRepo.Get(personId);
-                    var halJsonGenerator = new HalJsonGenerator();
-                    await halJsonGenerator.HalHandler(context, model);
+                    await HalJsonGenerator.HalHandler(context, model);
                 });
             });
         }
