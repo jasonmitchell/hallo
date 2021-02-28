@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Hallo.Sample.Models;
+using Hallo.AspNetCore.Mvc.Sample.Models;
 using Microsoft.Extensions.Hosting;
 
-namespace Hallo.Sample.Data
+namespace Hallo.AspNetCore.Mvc.Sample.Data
 {
     public class PeopleRepository
     {

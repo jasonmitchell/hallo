@@ -1,13 +1,12 @@
-using Hallo.Sample.Data;
-using Hallo.Sample.Models;
-using Hallo.Sample.Models.Hypermedia;
-using Hallo.Serialization;
+using Hallo.AspNetCore.Mvc.Sample.Data;
+using Hallo.AspNetCore.Mvc.Sample.Models;
+using Hallo.AspNetCore.Mvc.Sample.Models.Hypermedia;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Hallo.Sample
+namespace Hallo.AspNetCore.Mvc.Sample
 {
     public class Startup
     {

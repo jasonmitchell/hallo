@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Hallo.Serialization;
+using Hallo.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

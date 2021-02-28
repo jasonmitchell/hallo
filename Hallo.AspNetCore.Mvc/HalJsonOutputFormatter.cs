@@ -3,11 +3,12 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Hallo.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 
-namespace Hallo.Serialization
+namespace Hallo.AspNetCore.Mvc
 {
     /// <summary>
     /// An output formatter for handling HAL+JSON response formatting
@@ -37,8 +38,10 @@ namespace Hallo.Serialization
         /// default JSON serialization settings
         /// </summary>
         public HalJsonOutputFormatter()
-            : this(DefaultJsonSerializerOptions) {}
-        
+            : this(DefaultJsonSerializerOptions)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/>
         /// </summary>
@@ -56,27 +59,17 @@ namespace Hallo.Serialization
 
         public override async Task WriteAsync(OutputFormatterWriteContext context)
         {
-            var representationGenerator = GetRepresentationGenerator(context.HttpContext.RequestServices, context.ObjectType);
-            if (representationGenerator == null)
+            var json = await HalJsonGenerator.GenerateHalJson(context.HttpContext, context.Object, SerializerOptions);
+            if (json == null)
             {
                 context.HttpContext.Response.ContentType = "application/json";
                 await WriteResponseBodyAsync(context, Encoding.UTF8);
                 return;
             }
 
-            var representation = await representationGenerator.RepresentationOfAsync(context.Object);
-            var json = JsonSerializer.Serialize(representation, SerializerOptions);
-            
             var response = context.HttpContext.Response;
             response.ContentType = ContentType;
             await response.WriteAsync(json);
-        }
-
-        private static IHal GetRepresentationGenerator(IServiceProvider services, Type resourceType)
-        {
-            var representationType = typeof(Hal<>).MakeGenericType(resourceType);
-            var representation = (IHal)services.GetService(representationType);
-            return representation;
         }
     }
 }

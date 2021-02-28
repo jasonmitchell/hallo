@@ -1,4 +1,4 @@
-namespace Hallo.Sample
+namespace Hallo.AspNetCore.Sample
 {
     public class Paging
     {

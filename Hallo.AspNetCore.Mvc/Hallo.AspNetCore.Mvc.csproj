@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Version>1.0.0</Version>
+        <PackageVersion>1.0.0</PackageVersion>
+        <PackageId>Hallo.AspNetCore.Mvc</PackageId>
+        <AssemblyName>Hallo.AspNetCore.Mvc</AssemblyName>
+        <Authors>Jason Mitchell</Authors>
+        <Description>Hallo is a content negotiated implementation of the HAL hypermedia format for ASP.NET Core.</Description>
+        <PackageProjectUrl>https://github.com/jasonmitchell/hallo</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jasonmitchell/hallo</RepositoryUrl>
+        <PackageTags>HAL;HAL+JSON;Hypermedia</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hallo.AspNetCore\Hallo.AspNetCore.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+</Project>
