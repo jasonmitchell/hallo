@@ -20,6 +20,9 @@ jobs:
     - name: Test
       run: dotnet test --configuration Release --no-build
     - name: Pack
-      run: dotnet pack Hallo --configuration Release --no-build --include-symbols -o ./dist
+      run: | 
+        dotnet pack Hallo --configuration Release --no-build --include-symbols -o ./dist
+        dotnet pack Hallo.AspNetCore --configuration Release --no-build --include-symbols -o ./dist
+        dotnet pack Hallo.AspNetCore.Mvc --configuration Release --no-build --include-symbols -o ./dist
     - name: Publish
       run: dotnet nuget push --source nuget.org --api-key $NUGET_API_KEY ./dist/*.nupkg
