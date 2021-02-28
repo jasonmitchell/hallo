@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Hallo.AspNetCore.Sample\Hallo.AspNetCore.Sample.csproj" />
-        <ProjectReference Include="..\Hallo.AspNetCore\Hallo.AspNetCore.csproj" />
+        <ProjectReference Include="..\..\Hallo.AspNetCore\Hallo.AspNetCore.csproj" />
     </ItemGroup>
 
     <ItemGroup>

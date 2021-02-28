@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <RootNamespace>Hallo.AspNetCore.Sample</RootNamespace>
+        <RootNamespace>Hallo.AspNetCore.Mvc.Sample</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hallo.AspNetCore\Hallo.AspNetCore.csproj" />
+      <ProjectReference Include="..\..\Hallo.AspNetCore.Mvc\Hallo.AspNetCore.Mvc.csproj" />
     </ItemGroup>
 
 </Project>
