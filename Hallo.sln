@@ -4,17 +4,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo", "Hallo\Hallo.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.Test", "Hallo.Test\Hallo.Test.csproj", "{2B43A362-08D9-4850-A620-E39502959314}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{16117897-5815-4377-858D-EAA9063D6F12}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{16117897-5815-4377-858D-EAA9063D6F12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.AspNetCore.Mvc.Sample", "Hallo.AspNetCore.Mvc.Sample\Hallo.AspNetCore.Mvc.Sample.csproj", "{CBA0F3AD-A91E-4F89-BB20-A3D064883087}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.AspNetCore.Mvc.Sample", "samples\Hallo.AspNetCore.Mvc.Sample\Hallo.AspNetCore.Mvc.Sample.csproj", "{CBA0F3AD-A91E-4F89-BB20-A3D064883087}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.AspNetCore.Mvc", "Hallo.AspNetCore.Mvc\Hallo.AspNetCore.Mvc.csproj", "{E9E0E09A-A139-41B5-8A71-D41773F19ABC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.AspNetCore", "Hallo.AspNetCore\Hallo.AspNetCore.csproj", "{5F95D360-C97C-43E6-B251-6769F25F0AA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.AspNetCore.Sample", "Hallo.AspNetCore.Sample\Hallo.AspNetCore.Sample.csproj", "{A049EE9E-4078-4EB9-90B4-3C28B6A571E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hallo.AspNetCore.Sample", "samples\Hallo.AspNetCore.Sample\Hallo.AspNetCore.Sample.csproj", "{A049EE9E-4078-4EB9-90B4-3C28B6A571E7}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Hallo.Giraffe.Sample", "Hallo.Giraffe.Sample\Hallo.Giraffe.Sample.fsproj", "{F60A57D6-1F4F-4392-98CD-9351D368367E}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Hallo.Giraffe.Sample", "samples\Hallo.Giraffe.Sample\Hallo.Giraffe.Sample.fsproj", "{F60A57D6-1F4F-4392-98CD-9351D368367E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
