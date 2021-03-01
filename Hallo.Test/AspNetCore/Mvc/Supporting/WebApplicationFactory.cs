@@ -2,7 +2,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Hallo.Test.Integration.TestApi
+namespace Hallo.Test.AspNetCore.Mvc.Supporting
 {
     public class WebApplicationFactory : Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactory<Startup>
     {

@@ -6,8 +6,6 @@ using Hallo.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Hallo.Test.Serialization.Supporting
 {
@@ -32,10 +30,10 @@ namespace Hallo.Test.Serialization.Supporting
             return body;
         }
         
-        public static async Task<JObject> Format<T>(T resource, IServiceCollection services, JsonSerializerOptions jsonSerializerOptions = null)
+        public static async Task<JsonElement> Format<T>(T resource, IServiceCollection services, JsonSerializerOptions jsonSerializerOptions = null)
         {
             var body = await FormatRaw(resource, services, jsonSerializerOptions);
-            return JsonConvert.DeserializeObject<JObject>(body);
+            return JsonDocument.Parse(body).RootElement;
         }
 
         private static DefaultHttpContext CreateHttpContext(IServiceCollection services)
