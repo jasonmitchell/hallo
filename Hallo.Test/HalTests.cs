@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Hallo.Test
@@ -90,8 +89,10 @@ namespace Hallo.Test
             };
             
             var hal = await ((IHal) representation).RepresentationOfAsync(resource);
-            var jObject = JObject.FromObject(hal.State);
-            jObject["Source"].Value<string>().Should().Be("async");
+            hal.State.Should().BeEquivalentTo(new
+            {
+                Source = "async"
+            });
         }
         
         private class ResourceModel

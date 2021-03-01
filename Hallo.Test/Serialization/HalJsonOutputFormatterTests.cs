@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Hallo.Test.Serialization.Supporting;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Hallo.Test.Serialization
@@ -24,9 +23,8 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().ContainKeys("id", "property");
-            json["id"].Value<int>().Should().Be(123);
-            json["property"].Value<string>().Should().Be("test");
+            json.GetProperty("id").GetInt32().Should().Be(123);
+            json.GetProperty("property").GetString().Should().Be("test");
         }
 
         [Fact]
@@ -40,10 +38,9 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().ContainKey("property");
-            json.Should().NotContainKey("id");
+            json.TryGetProperty("property", out _).Should().BeTrue();
+            json.TryGetProperty("id", out _).Should().BeFalse();
         }
-
 
         [Fact]
         public async Task SerializesLinks()
@@ -56,12 +53,9 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().ContainKeys("id", "property", "_links");
-            
-            var links = json.Value<JObject>("_links");
-            links.Should().ContainKeys("self", "another-resource");
-            links["self"]["href"].Value<string>().Should().Be("/dummy-model/123");
-            links["another-resource"]["href"].Value<string>().Should().Be("/dummy-model/another-resource");
+            var links = json.GetProperty("_links");
+            links.GetProperty("self").GetProperty("href").GetString().Should().Be("/dummy-model/123");
+            links.GetProperty("another-resource").GetProperty("href").GetString().Should().Be("/dummy-model/another-resource");
         }
 
         [Fact]
@@ -75,11 +69,10 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
             
-            json.Should().ContainKeys("id", "property", "_links");
-            var links = json.Value<JObject>("_links");
-            links.Should().ContainKeys("self");
+            var links = json.GetProperty("_links");
+            links.TryGetProperty("self", out var self).Should().BeTrue();
 
-            links["self"].As<JArray>().Should().HaveCount(2);
+            self.GetArrayLength().Should().Be(2);
         }
         
         [Fact]
@@ -93,7 +86,7 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().NotContainKey("_links");
+            json.TryGetProperty("_links", out _).Should().BeFalse();
         }
         
         [Fact]
@@ -107,7 +100,7 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().NotContainKey("_links");
+            json.TryGetProperty("_links", out _).Should().BeFalse();
         }
         
         [Fact]
@@ -121,11 +114,9 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().ContainKeys("id", "property", "_embedded");
-            
-            var embedded = json.Value<JObject>("_embedded");
-            embedded.Should().ContainKey("magicNumber");
-            embedded["magicNumber"].Value<int>().Should().Be(3);
+            var embedded = json.GetProperty("_embedded");
+            embedded.TryGetProperty("magicNumber", out var magicNumber).Should().BeTrue();
+            magicNumber.GetInt32().Should().Be(3);
         }
         
         [Fact]
@@ -139,7 +130,7 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().NotContainKey("_embedded");
+            json.TryGetProperty("_embedded", out _).Should().BeFalse();
         }
 
         [Fact]
@@ -160,15 +151,14 @@ namespace Hallo.Test.Serialization
                 }
             }, _services, _jsonSerializerOptions);
 
-            var embedded = json.Value<JObject>("_embedded");
+            var embedded = json.GetProperty("_embedded");
             embedded.Should().NotBeNull();
 
-            var items = embedded["items"].As<JArray>();
-            items.Should().NotBeNull();
-            items.Count.Should().BeGreaterThan(0);
-            items[0]["_links"].Should().NotBeNull();
-            items[0]["_embedded"].Should().BeNull();
-            items[0]["id"].Should().NotBeNull();
+            embedded.TryGetProperty("items", out var items).Should().BeTrue();
+            items.GetArrayLength().Should().BeGreaterThan(0);
+            items[0].TryGetProperty("_links", out _).Should().BeTrue();
+            items[0].TryGetProperty("_embedded", out _).Should().BeFalse();
+            items[0].TryGetProperty("id", out _).Should().BeTrue();
         }
 
         [Fact]
@@ -180,10 +170,10 @@ namespace Hallo.Test.Serialization
                 Property = "test"
             }, _services, _jsonSerializerOptions);
 
-            json.Should().ContainKeys("id", "property");
-            json.Value<int>("id").Should().Be(1);
-            json.Value<string>("property").Should().Be("test");
-            json.Should().NotContainKeys("_links", "_embedded");
+            json.GetProperty("id").GetInt32().Should().Be(1);
+            json.GetProperty("property").GetString().Should().Be("test");
+            json.TryGetProperty("_links", out _).Should().BeFalse();
+            json.TryGetProperty("_embedded", out _).Should().BeFalse();
         }
 
         [Fact]
