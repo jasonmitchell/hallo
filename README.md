@@ -1,5 +1,5 @@
 # Hallo
-![](https://github.com/jasonmitchell/hallo/workflows/Build%20Pull%20Request/badge.svg)
+![](https://github.com/jasonmitchell/hallo/workflows/Build/badge.svg?branch=master)
 [![NuGet](https://img.shields.io/nuget/v/Hallo.svg?style=flat)](https://www.nuget.org/packages/Hallo/)
 
 Hallo is an implementation of the [Hypertext Application Language (HAL)](http://stateless.co/hal_specification.html)

@@ -1,8 +1,11 @@
 on: 
+  push:
+    branches:
+      - master
   pull_request:
     types: [opened, synchronize]
 
-name: Build Pull Request
+name: Build
 jobs:
   build:
     runs-on: ubuntu-latest
