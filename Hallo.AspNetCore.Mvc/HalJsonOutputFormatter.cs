@@ -28,17 +28,12 @@ namespace Hallo.AspNetCore.Mvc
     {
         private const string ContentType = "application/hal+json";
 
-        private static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new()
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        };
-        
         /// <summary>
         /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/> with
         /// default JSON serialization settings
         /// </summary>
         public HalJsonOutputFormatter()
-            : this(DefaultJsonSerializerOptions)
+            : this(HalJsonSerializer.DefaultSerializerOptions)
         {
         }
 
