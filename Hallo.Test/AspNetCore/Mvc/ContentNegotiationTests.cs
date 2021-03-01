@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using FluentAssertions;
-using Hallo.Test.Integration.TestApi;
+using Hallo.Test.AspNetCore.Mvc.Supporting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Hallo.Test.Integration
+namespace Hallo.Test.AspNetCore.Mvc
 {
     public class ContentNegotiationTests : IClassFixture<WebApplicationFactory>
     {

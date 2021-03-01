@@ -3,7 +3,7 @@ using Hallo.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Hallo.Test.Integration.TestApi
+namespace Hallo.Test.AspNetCore.Mvc.Supporting
 {
     public class Startup
     {

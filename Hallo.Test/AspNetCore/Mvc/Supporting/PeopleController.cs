@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hallo.Test.Integration.TestApi
+namespace Hallo.Test.AspNetCore.Mvc.Supporting
 {
     [Route("people")]
     public class PeopleController : ControllerBase
