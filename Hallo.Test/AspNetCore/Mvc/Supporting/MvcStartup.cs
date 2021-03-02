@@ -1,18 +1,17 @@
-using System.Text.Json;
 using Hallo.AspNetCore.Mvc;
+using Hallo.Test.AspNetCore.Supporting.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hallo.Test.AspNetCore.Mvc.Supporting
 {
-    public class Startup
+    public class MvcStartup
     {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options =>
             {
-                var jsonOptions = new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
-                options.OutputFormatters.Add(new HalJsonOutputFormatter(jsonOptions));
+                options.OutputFormatters.Add(new HalJsonOutputFormatter());
             });
 
             services.AddTransient<ContactLookup>();

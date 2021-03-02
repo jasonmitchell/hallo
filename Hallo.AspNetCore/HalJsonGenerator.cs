@@ -1,6 +1,6 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Threading.Tasks;
+using Hallo.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,41 +8,27 @@ namespace Hallo.AspNetCore
 {
     public static class HalJsonGenerator
     {
-        public static async Task HalHandler(HttpContext context, Object halObject)
+        public static async Task HalHandler(HttpContext context, object resource)
         {
-            var json = await GenerateHalJson(context, halObject);
-            if (json == null)
-            {
-                var serializerOptions = context.RequestServices.GetRequiredService<JsonSerializerOptions>();
-                context.Response.ContentType = "application/json";
-                await JsonSerializer.SerializeAsync(context.Response.Body, halObject, halObject.GetType(),
-                    serializerOptions);
-                await context.Response.Body.FlushAsync();
-            }
-            context.Response.ContentType = "application/hal+json";
-            await context.Response.WriteAsync(json);
-        }
-
-        public static async Task<string> GenerateHalJson(HttpContext context, Object halObject,
-            JsonSerializerOptions serializerOptions = null)
-        {
-            var representationGenerator = GetRepresentationGenerator(context.RequestServices, halObject.GetType());
+            var services = context.RequestServices;
+            var serializerOptions = context.RequestServices.GetService<JsonSerializerOptions>() ?? HalJsonSerializer.DefaultSerializerOptions;
+            var representationGenerator = services.GetRepresentationGenerator(resource.GetType());
+            
             if (representationGenerator == null)
             {
-                return null;
+                context.Response.ContentType = "application/json";
+                
+                await JsonSerializer.SerializeAsync(context.Response.Body, resource, resource.GetType(), serializerOptions);
+                await context.Response.Body.FlushAsync();
+                
+                return;
             }
 
-            serializerOptions ??= context.RequestServices.GetRequiredService<JsonSerializerOptions>();
-            var representation = await representationGenerator.RepresentationOfAsync(halObject);
-            var json = JsonSerializer.Serialize(representation, serializerOptions);
-            return json;
-        }
+            context.Response.ContentType = "application/hal+json";
 
-        private static IHal GetRepresentationGenerator(IServiceProvider services, Type resourceType)
-        {
-            var representationType = typeof(Hal<>).MakeGenericType(resourceType);
-            var representation = (IHal) services.GetService(representationType);
-            return representation;
+            var json = await HalJsonSerializer.SerializeAsync(representationGenerator, resource, serializerOptions);
+            await context.Response.WriteAsync(json);
+            await context.Response.Body.FlushAsync();
         }
     }
 }

@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Hallo.Serialization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 
@@ -24,8 +23,6 @@ namespace Hallo.AspNetCore.Mvc
     /// <inheritdoc cref="SystemTextJsonOutputFormatter"/>
     public class HalJsonOutputFormatter : SystemTextJsonOutputFormatter
     {
-        private const string ContentType = "application/hal+json";
-
         /// <summary>
         /// Initializes a new instance of <see cref="HalJsonOutputFormatter"/> with
         /// default JSON serialization settings
@@ -42,27 +39,14 @@ namespace Hallo.AspNetCore.Mvc
         public HalJsonOutputFormatter(JsonSerializerOptions serializerOptions)
             : base(serializerOptions)
         {
-            serializerOptions.Converters.Add(new HalRepresentationConverter());
-            serializerOptions.Converters.Add(new LinksConverter());
-
             SupportedEncodings.Add(Encoding.UTF8);
             SupportedMediaTypes.Clear();
-            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ContentType));
+            SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/hal+json"));
         }
 
         public override async Task WriteAsync(OutputFormatterWriteContext context)
         {
-            var json = await HalJsonGenerator.GenerateHalJson(context.HttpContext, context.Object, SerializerOptions);
-            if (json == null)
-            {
-                context.HttpContext.Response.ContentType = "application/json";
-                await WriteResponseBodyAsync(context, Encoding.UTF8);
-                return;
-            }
-
-            var response = context.HttpContext.Response;
-            response.ContentType = ContentType;
-            await response.WriteAsync(json);
+            await HalJsonGenerator.HalHandler(context.HttpContext, context.Object);
         }
     }
 }
