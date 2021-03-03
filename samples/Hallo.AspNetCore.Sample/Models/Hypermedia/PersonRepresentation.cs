@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Hallo.AspNetCore.Sample.Models.Hypermedia
 {
-    public class PersonRepresentation : Hal<Person>, 
-                                        IHalLinks<Person>, 
-                                        IHalEmbeddedAsync<Person>
+    public class PersonRepresentation : Hal<Person>,
+        IHalLinks<Person>,
+        IHalEmbeddedAsync<Person>
     {
         public IEnumerable<Link> LinksFor(Person resource)
         {
@@ -20,10 +20,12 @@ namespace Hallo.AspNetCore.Sample.Models.Hypermedia
             });
         }
     }
-    
+
     public class PersonListRepresentation : PagedListRepresentation<Person>
     {
-        public PersonListRepresentation(PersonRepresentation personRepresentation) 
-            : base("/people", personRepresentation) { }
+        public PersonListRepresentation(PersonRepresentation personRepresentation)
+            : base("/people", personRepresentation)
+        {
+        }
     }
 }
