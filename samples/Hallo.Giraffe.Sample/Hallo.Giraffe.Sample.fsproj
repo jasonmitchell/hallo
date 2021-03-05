@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
@@ -23,6 +22,6 @@
         <PackageReference Include="Giraffe" Version="5.0.0-rc-6" />
         <PackageReference Include="FSharp.SystemTextJson" Version="0.14.8" />
     </ItemGroup>
-    
+
 
 </Project>

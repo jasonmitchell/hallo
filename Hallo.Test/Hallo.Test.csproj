@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Nullable>enable</Nullable>
         <WarningsAsErrors>true</WarningsAsErrors>
     </PropertyGroup>
 

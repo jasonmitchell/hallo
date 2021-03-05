@@ -23,18 +23,18 @@ namespace Hallo.Test
 
             linkA.Equals(linkB).Should().Be(true);
         }
-        
+
         [Theory, InlineData(null), InlineData(""), InlineData("  ")]
         public void RelIsRequired(string rel)
         {
-            Action action = () => new Link(rel, "/href");
+            Action action = () => _ = new Link(rel, "/href");
             action.Should().Throw<ArgumentException>();
         }
-        
+
         [Theory, InlineData(null), InlineData(""), InlineData("  ")]
         public void HrefIsRequired(string href)
         {
-            Action action = () => new Link("self", href);
+            Action action = () => _ = new Link("self", href);
             action.Should().Throw<ArgumentException>();
         }
 

@@ -18,7 +18,7 @@ namespace Hallo
             var state = await StateFor(this, typedResource);
             var embedded = await EmbeddedFor(this, typedResource);
             var links = await LinksFor(this, typedResource);
-            
+
             return new HalRepresentation(state, embedded, links);
         }
 
@@ -34,7 +34,7 @@ namespace Hallo
                 return state.StateFor(resource);
             }
 
-            return resource ?? new object {};
+            return resource ?? new object();
         }
 
         private static async Task<object?> EmbeddedFor(IHal representation, TResource resource)
