@@ -11,6 +11,8 @@ namespace Hallo.Serialization
         public static readonly JsonSerializerOptions DefaultSerializerOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true,
+            MaxDepth = 32,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             Converters =
             {

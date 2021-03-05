@@ -15,7 +15,7 @@ namespace Hallo.Test.Serialization
             var json = await HalJsonSerializer.SerializeAsync(representationGenerator, resource, HalJsonSerializer.DefaultSerializerOptions);
             return JsonDocument.Parse(json).RootElement;
         }
-        
+
         [Fact]
         public async Task SerializesDefaultState()
         {
@@ -24,7 +24,7 @@ namespace Hallo.Test.Serialization
                 Id = 123,
                 Property = "test"
             });
-
+            
             json.GetProperty("id").GetInt32().Should().Be(123);
             json.GetProperty("property").GetString().Should().Be("test");
         }
