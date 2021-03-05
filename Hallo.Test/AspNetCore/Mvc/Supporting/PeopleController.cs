@@ -1,3 +1,4 @@
+using Hallo.Test.AspNetCore.Supporting.Api;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hallo.Test.AspNetCore.Mvc.Supporting
@@ -11,6 +12,13 @@ namespace Hallo.Test.AspNetCore.Mvc.Supporting
             Id = id,
             FirstName = "Test",
             LastName = "User"
+        };
+
+        [Route("{id}/address")]
+        public ActionResult<Address> GetAddress() => new Address
+        {
+            FirstLine = "Some First Line",
+            SecondLine = "Some Second Line"
         };
     }
 }

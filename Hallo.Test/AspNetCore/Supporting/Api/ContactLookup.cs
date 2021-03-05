@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hallo.Test.AspNetCore.Mvc.Supporting
+namespace Hallo.Test.AspNetCore.Supporting.Api
 {
     public class ContactLookup
     {

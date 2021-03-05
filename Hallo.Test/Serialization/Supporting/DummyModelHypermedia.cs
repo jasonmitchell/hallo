@@ -16,6 +16,31 @@ namespace Hallo.Test.Serialization.Supporting
         }
     }
 
+    internal class FullRepresentation : Hal<DummyModel>,
+                                        IHalState<DummyModel>,
+                                        IHalEmbedded<DummyModel>,
+                                        IHalLinks<DummyModel>
+    {
+        public object StateFor(DummyModel resource) => resource;
+
+        public object EmbeddedFor(DummyModel resource)
+        {
+            return new
+            {
+                test = new
+                {
+                    Property = 1
+                }
+            };
+        }
+
+        public IEnumerable<Link> LinksFor(DummyModel resource)
+        {
+            yield return new Link(Link.Self, $"/dummy-model/{resource.Id}");
+            yield return new Link("another-resource", $"/dummy-model/another-resource");
+        }
+    }
+
     internal class LinkedRepresentation : Hal<DummyModel>,
                                           IHalLinks<DummyModel>
     {

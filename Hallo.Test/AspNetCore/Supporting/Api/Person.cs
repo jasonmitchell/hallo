@@ -1,4 +1,4 @@
-namespace Hallo.Test.AspNetCore.Mvc.Supporting
+namespace Hallo.Test.AspNetCore.Supporting.Api
 {
     public class Person
     {
