@@ -5,6 +5,11 @@
         <RootNamespace>Hallo.AspNetCore.Mvc.Sample</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>true</WarningsAsErrors>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\..\Hallo.AspNetCore.Mvc\Hallo.AspNetCore.Mvc.csproj" />
     </ItemGroup>
