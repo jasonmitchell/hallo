@@ -6,14 +6,23 @@ using System.Text.Json.Serialization;
 
 namespace Hallo.Serialization
 {
+    /// <summary>
+    /// A derived <see cref="JsonConverter"/> which serializes a <see cref="HalRepresentation"/> to JSON 
+    /// </summary>
     public class HalRepresentationConverter : JsonConverter<HalRepresentation>
     {
+        /// <inheritdoc cref="JsonConverter"/>
         public override bool CanConvert(Type objectType) 
             => typeof(HalRepresentation).IsAssignableFrom(objectType);
 
+        /// <summary>
+        /// NOT IMPLEMENTED: This converter does not support deserialization
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override HalRepresentation Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) 
             => throw new NotImplementedException();
 
+        /// <inheritdoc cref="JsonConverter"/>
         public override void Write(Utf8JsonWriter writer, HalRepresentation value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();

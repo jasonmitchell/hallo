@@ -16,8 +16,8 @@ namespace Hallo.AspNetCore.Mvc
     /// </p>
     /// <p>
     /// When no HAL document generation has been implemented for the resource
-    /// type being serialized it will fall back to the standard behaviour of
-    /// <see cref="SystemTextJsonOutputFormatter"/>
+    /// type being serialized it will fall back to basic JSON serialization using
+    /// the configured <see cref="JsonSerializerOptions"/>
     /// </p>
     /// </remarks>
     /// <inheritdoc cref="SystemTextJsonOutputFormatter"/>
@@ -44,6 +44,7 @@ namespace Hallo.AspNetCore.Mvc
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse("application/hal+json"));
         }
 
+        /// <inheritdoc cref="SystemTextJsonOutputFormatter"/>
         public override async Task WriteAsync(OutputFormatterWriteContext context)
         {
             await HalJsonGenerator.HalHandler(context.HttpContext, context.Object);

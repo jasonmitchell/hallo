@@ -6,11 +6,19 @@ using System.Text.Json.Serialization;
 
 namespace Hallo.Serialization
 {
+    /// <summary>
+    /// A derived <see cref="JsonConverter"/> which serializes a <see cref="IEnumerable{Link}"/> to JSON 
+    /// </summary>
     public class LinksConverter : JsonConverter<IEnumerable<Link>>
     {
+        /// <summary>
+        /// NOT IMPLEMENTED: This converter does not support deserialization
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override IEnumerable<Link> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) 
             => throw new NotImplementedException();
 
+        /// <inheritdoc cref="JsonConverter"/>
         public override void Write(Utf8JsonWriter writer, IEnumerable<Link> value, JsonSerializerOptions options)
         {
             var links = value.GroupBy(x => x.Rel, x => x)
