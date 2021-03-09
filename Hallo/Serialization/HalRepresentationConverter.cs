@@ -35,7 +35,7 @@ namespace Hallo.Serialization
         private static void WriteState(Utf8JsonWriter writer, object state, JsonSerializerOptions options) 
             => WriteObjectProperties(writer, state, options);
         
-        private static void WriteEmbedded(Utf8JsonWriter writer, object? embedded, JsonSerializerOptions options)
+        private static void WriteEmbedded(Utf8JsonWriter writer, object embedded, JsonSerializerOptions options)
         {
             if (embedded == null)
             {

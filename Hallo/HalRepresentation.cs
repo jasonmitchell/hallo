@@ -15,7 +15,7 @@ namespace Hallo
         /// <summary>
         /// The additional resources to be embedded in the document
         /// </summary>
-        public object? Embedded { get; }
+        public object Embedded { get; }
         
         /// <summary>
         /// The hyperlinks to related resources
@@ -39,7 +39,7 @@ namespace Hallo
         /// <param name="state">The state of the requested resource</param>
         /// <param name="embedded">The additional resources to be embedded in the document</param>
         /// <param name="links">The hyperlinks to related resources</param>
-        public HalRepresentation(object state, object? embedded, IEnumerable<Link> links)
+        public HalRepresentation(object state, object embedded, IEnumerable<Link> links)
         {
             State = state;
             Embedded = embedded;

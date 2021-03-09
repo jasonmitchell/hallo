@@ -28,32 +28,32 @@ namespace Hallo
         /// <summary>
         /// A hint to indicate the media type expected when dereferencing the target resource
         /// </summary>
-        public string? Type { get; }
+        public string Type { get; }
 
         /// <summary>
         /// A URI that provides further information about the deprecation
         /// </summary>
-        public Uri? Deprecation { get; }
+        public Uri Deprecation { get; }
 
         /// <summary>
         /// A secondary key for selecting Links which share the same relation type
         /// </summary>
-        public string? Name { get; }
+        public string Name { get; }
 
         /// <summary>
         /// A URI that hints about the profile of the target resource
         /// </summary>
-        public Uri? Profile { get; }
+        public Uri Profile { get; }
 
         /// <summary>
         /// A label for the link with a human-readable identifier
         /// </summary>
-        public string? Title { get; }
+        public string Title { get; }
 
         /// <summary>
         /// The language of the target resource
         /// </summary>
-        public string? HrefLang { get; }
+        public string HrefLang { get; }
 
         /// <summary>
         /// Indicates if the hyperlink contains a URI template
@@ -71,8 +71,8 @@ namespace Hallo
         /// <param name="profile">A URI that hints about the profile of the target resource</param>
         /// <param name="title">A label for the link with a human-readable identifier</param>
         /// <param name="hrefLang">The language of the target resource</param>
-        public Link(string rel, string href, string? type = null, Uri? deprecation = null, string? name = null,
-            Uri? profile = null, string? title = null, string? hrefLang = null)
+        public Link(string rel, string href, string type = null, Uri deprecation = null, string name = null,
+            Uri profile = null, string title = null, string hrefLang = null)
         {
             if (string.IsNullOrWhiteSpace(rel))
             {
