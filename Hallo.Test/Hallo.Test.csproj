@@ -2,13 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup>
-        <Nullable>enable</Nullable>
-        <WarningsAsErrors>true</WarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

@@ -37,7 +37,7 @@ namespace Hallo
             return resource ?? new object {};
         }
 
-        private static async Task<object?> EmbeddedFor(IHal representation, TResource resource)
+        private static async Task<object> EmbeddedFor(IHal representation, TResource resource)
         {
             if (representation is IHalEmbeddedAsync<TResource> asyncEmbedded)
             {
