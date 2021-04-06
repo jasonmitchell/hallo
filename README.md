@@ -1,6 +1,8 @@
 # Hallo
 ![](https://github.com/jasonmitchell/hallo/workflows/Build/badge.svg?branch=master)
 [![NuGet](https://img.shields.io/nuget/v/Hallo.svg?style=flat)](https://www.nuget.org/packages/Hallo/)
+[![NuGet](https://img.shields.io/nuget/v/Hallo.AspNetCore.svg?style=flat)](https://www.nuget.org/packages/Hallo.AspNetCore/)
+[![NuGet](https://img.shields.io/nuget/v/Hallo.AspNetCore.Mvc.svg?style=flat)](https://www.nuget.org/packages/Hallo.AspNetCore.Mvc/)
 
 Hallo is an implementation of the [Hypertext Application Language (HAL)](http://stateless.co/hal_specification.html)
 format for ASP.NET Core.
@@ -13,7 +15,23 @@ without requiring HAL-specific code in models or controllers.
 ## Getting started with Hallo
 
 ## Installing Hallo
-Hallo is available on [Nuget](https://www.nuget.org/packages/Hallo/): `dotnet add package Hallo`
+Hallo is available on Nuget as three packages:
+- [Hallo](https://www.nuget.org/packages/Hallo/)
+- [Hallo.AspNetCore](https://www.nuget.org/packages/Hallo.AspNetCore/)
+- [Hallo.AspNetCore.Mvc](https://www.nuget.org/packages/Hallo.AspNetCore.Mvc)
+
+```
+dotnet add package Hallo
+dotnet add package Hallo.AspNetCore
+dotnet add package Hallo.AspNetCore.Mvc
+```
+
+The Hallo package is the core library which provides types for writing HAL representation generators
+and serializing objects to HAL+JSON strings. The Hallo.AspNetCore provides basic support for serializing 
+HAL representations to the `HttpResponse` body stream and the Hallo.AspNetCore.Mvc package provides an
+output formatter to leverage ASP.NET MVC content negotiation functionality.
+
+The rest of this readme will assume you are using the Hallo.AspNetCore.MVC package.
 
 
 ## Using Hallo
