@@ -96,19 +96,19 @@ namespace Hallo.Serialization
                         }
                         break;
                     case nameof(Link.Title):
-                        if (link.Profile != null)
+                        if (link.Title != null)
                         {
                             writer.WriteString("title", link.Title);
                         }
                         break;
                     case nameof(Link.Type):
-                        if (link.Profile != null)
+                        if (link.Type != null)
                         {
                             writer.WriteString("type", link.Type);
                         }
                         break;
                     case nameof(Link.HrefLang):
-                        if (link.Profile != null)
+                        if (link.HrefLang != null)
                         {
                             writer.WriteString("hreflang", link.HrefLang);
                         }
