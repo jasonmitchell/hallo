@@ -166,5 +166,20 @@ namespace Hallo.Test.Serialization
 
             action.Should().Throw<InvalidJsonSerializerOptionsException>();
         }
+        
+        [Fact]
+        public async Task SerializerEnsuresCuriesAlwaysAnArray()
+        {
+            var json = await Serialize(new CurieRepresentation(), new DummyModel
+            {
+                Id = 123,
+                Property = "test"
+            });
+
+            var links = json.GetProperty("_links");
+            links.TryGetProperty("curies", out var curie).Should().BeTrue();
+
+            curie.GetArrayLength().Should().Be(1);
+        }
     }
 }
