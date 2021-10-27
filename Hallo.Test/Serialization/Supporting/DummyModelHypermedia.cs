@@ -87,4 +87,14 @@ namespace Hallo.Test.Serialization.Supporting
         public DummyModelListRepresentation(IHalLinks<DummyModel> linkedRepresentation) 
             : base("/dummy-model", linkedRepresentation) { }
     }
+    
+    internal class CurieRepresentation : Hal<DummyModel>,
+        IHalLinks<DummyModel>
+    {
+        public IEnumerable<Link> LinksFor(DummyModel resource)
+        {
+            yield return new Link("curies", "/docs/{rel}.html", "text/html", name: "foo", title: "Documentation",
+                hrefLang: "en");
+        }
+    }
 }

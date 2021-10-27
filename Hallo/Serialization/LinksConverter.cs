@@ -35,7 +35,7 @@ namespace Hallo.Serialization
             {
                 writer.WritePropertyName(link.Key);
                 
-                if (link.Value.Count > 1)
+                if (link.Value.Count > 1 || link.Key == "curies")
                 {
                     WriteLinks(writer, link.Value);
                 }
